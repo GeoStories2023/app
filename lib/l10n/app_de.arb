@@ -1,0 +1,10 @@
+{
+    "settingsThemeDark": "Dunkel",
+    "settingsThemeLight": "Hell",
+
+    "aboutProjectDescription": "Ein Projekt der FA21 Azubis",
+
+    "navBarHome": "Übersicht",
+    "navBarSettings": "Einstellungen",
+    "navBarAbout": "Über"
+}
