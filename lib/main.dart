@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:geostories/auth/login_page.dart';
 import 'package:provider/provider.dart';
 
 import 'auth/auth.dart';
@@ -60,7 +60,6 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(brightness: Brightness.light),
           locale: localeProvider.locale,
           localizationsDelegates: const [
-            AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
@@ -69,32 +68,9 @@ class MyApp extends StatelessWidget {
             Locale("en"),
             Locale("de"),
           ],
-          home: const SplashScreen(),
+          home: const LoginPage(),
         );
       },
-    );
-  }
-}
-
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Splash",
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 20),
-            const CircularProgressIndicator(),
-          ],
-        ),
-      ),
     );
   }
 }
