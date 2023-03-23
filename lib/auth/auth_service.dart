@@ -28,4 +28,22 @@ class AuthService {
   signOut() async {
     _firebaseAuth.signOut();
   }
+
+  changeEmailPassword(String currentPassword, String newPassword) async {
+    User? user = currentUser;
+    if (user == null) return;
+
+    final cred = EmailAuthProvider.credential(
+      email: user.email!,
+      password: currentPassword,
+    );
+
+    user.reauthenticateWithCredential(cred).then((value) {
+      user.updatePassword(newPassword).then((_) {
+        //Success, do something
+      }).catchError((error) {
+        //Error, show something
+      });
+    }).catchError((err) {});
+  }
 }
