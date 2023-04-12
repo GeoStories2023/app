@@ -13,6 +13,11 @@ class AuthService {
     );
   }
 
+  void changeEmailPassword(String password) async {
+    if (currentUser == null) return;
+    await currentUser!.updatePassword(password);
+  }
+
   signUpWithEmail(String email, String password) async {
     return await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
