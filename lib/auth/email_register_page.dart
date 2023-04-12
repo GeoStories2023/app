@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:geostories_app/auth/email_register_page.dart';
 
 import 'widgets/auth_text_field.dart';
 import 'widgets/login_button.dart';
 
-class EmailAuthPage extends StatelessWidget {
-  const EmailAuthPage({super.key});
+class EmailRegisterPage extends StatelessWidget {
+  const EmailRegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +42,6 @@ class EmailAuthPage extends StatelessWidget {
                     emailController: emailController,
                     pwdController: pwdController,
                   ),
-                  TextButton(
-                      onPressed: () =>
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const EmailRegisterPage(),
-                          )),
-                      child: const Text("Register")),
                 ],
               ),
             ),

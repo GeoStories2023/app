@@ -5,17 +5,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../bloc/auth_bloc.dart';
 
-class LoginButton extends StatefulWidget {
+class RegisterButton extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController pwdController;
-  const LoginButton(
+  const RegisterButton(
       {super.key, required this.emailController, required this.pwdController});
 
   @override
-  State<StatefulWidget> createState() => _LoginButtonState();
+  State<StatefulWidget> createState() => _RegisterButtonState();
 }
 
-class _LoginButtonState extends State<LoginButton> {
+class _RegisterButtonState extends State<RegisterButton> {
   @override
   Widget build(BuildContext context) {
     var l10n = AppLocalizations.of(context);
@@ -24,7 +24,7 @@ class _LoginButtonState extends State<LoginButton> {
       padding: const EdgeInsets.only(top: 10, bottom: 10, left: 25, right: 25),
       child: GestureDetector(
         onTap: () => authBloc.add(
-          AuthLoginEmailPressed(
+          AuthRegisterEmailPressed(
             widget.emailController.text,
             widget.pwdController.text,
           ),

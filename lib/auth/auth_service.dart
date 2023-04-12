@@ -13,6 +13,13 @@ class AuthService {
     );
   }
 
+  signUpWithEmail(String email, String password) async {
+    return await _firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+  }
+
   signInWithGoogle() async {
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication gAuth = await gUser!.authentication;
@@ -27,23 +34,5 @@ class AuthService {
   /// Signs the user out
   signOut() async {
     _firebaseAuth.signOut();
-  }
-
-  changeEmailPassword(String currentPassword, String newPassword) async {
-    User? user = currentUser;
-    if (user == null) return;
-
-    final cred = EmailAuthProvider.credential(
-      email: user.email!,
-      password: currentPassword,
-    );
-
-    user.reauthenticateWithCredential(cred).then((value) {
-      user.updatePassword(newPassword).then((_) {
-        //Success, do something
-      }).catchError((error) {
-        //Error, show something
-      });
-    }).catchError((err) {});
   }
 }

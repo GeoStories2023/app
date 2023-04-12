@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../auth_service.dart';
+import 'package:geostories_app/auth/auth_service.dart';
 
 class GoogleSignInButton extends StatefulWidget {
   const GoogleSignInButton({super.key});

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geostories/auth/auth_service.dart';
+import 'package:geostories_app/auth/auth_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../prefs/prefs.dart';
@@ -17,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLoginGooglePressed>(_onLoginGooglePressed);
     on<AuthLoginEmailPressed>(_onLoginEmailPressed);
     on<AuthLogoutPressed>(_onLogoutPressed);
+    on<AuthRegisterEmailPressed>(_onRegisterEmailPressed);
     on<AuthAutoLogin>(_onAutoLogin);
     on<_WaitForLogin>(_onWaitForLogin);
     on<_WaitForLogout>(_onWaitForLogout);
@@ -36,7 +37,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthLoginEmailPressed event,
     Emitter<AuthState> emit,
   ) async {
-    AuthService().signInWithEmail(event.email, event.password);
+    await AuthService().signInWithEmail(event.email, event.password);
     emit(AuthLoginInProgress());
     add(_WaitForLogin());
   }
@@ -84,5 +85,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthAutoLoginInProgress());
       add(const AuthLoginGooglePressed());
     }
+  }
+
+  FutureOr<void> _onRegisterEmailPressed(
+    AuthRegisterEmailPressed event,
+    Emitter<AuthState> emit,
+  ) async {
+    try {
+      await AuthService().signUpWithEmail(event.email, event.password);
+      add(AuthLoginEmailPressed(event.email, event.password));
+    } catch (e) {}
   }
 }

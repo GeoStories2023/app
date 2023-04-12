@@ -24,6 +24,7 @@ class _AuthTextField extends State<AuthTextField> {
 
   @override
   void initState() {
+    _textHidden = false;
     setState(() {
       _textHidden = widget.obscure;
     });
