@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:geostories_app/auth/email_register_page.dart';
 
+import 'email_register_page.dart';
 import 'widgets/auth_text_field.dart';
 import 'widgets/login_button.dart';
 

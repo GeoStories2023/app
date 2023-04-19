@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:geostories_app/auth/email_auth_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:lottie/lottie.dart';
 
 import '../business/home/business_home.dart';
 import '../widgets/page_transitions.dart';
 import 'bloc/auth_bloc.dart';
+import 'email_auth_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

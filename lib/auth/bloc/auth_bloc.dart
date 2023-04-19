@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geostories_app/auth/auth_service.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../prefs/prefs.dart';
+import '../auth.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

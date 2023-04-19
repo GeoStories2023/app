@@ -1,0 +1,32 @@
+{
+    "nav_home": "Home",
+    "nav_friends": "Friends",
+    "nav_profile": "Profile",
+    "nav_settings": "Settings",
+    "nav_stories": "Stories",
+    "nav_discover": "Discover",
+
+    "auth_business_login": "Business login",
+    "auth_email_email": "E-Mail",
+    "auth_email_password": "Password",
+    "auth_email_login": "Login",
+
+    "home_news": "News",
+    "home_adventure_selection": "Choose your Adventure",
+
+    "consumer_profile_statistics": "Your stats 📈",
+    "consumer_profile_city_rank": "Most visited city 🏙️",
+
+    "settings_settings_groupTitle": "Settings",
+    "settings_settings_language": "Language",
+    "settings_settings_permissions": "Permissions",
+
+    "settings_account_groupTitle": "Account",
+    "settings_account_privacy": "Privacy",
+    "settings_account_deleteAccount": "Delete Account",
+    "settings_account_logout": "Logout",
+
+    "settings_help_groupTitle": "Help & Tips",
+    "settings_help_tour": "Take the tour",
+    "settings_help_about": "About GeoStories"
+}
