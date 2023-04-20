@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:geostories_app/consumer/widgets/discount_element.dart';
+
+import '../../widgets/discount_element.dart';
 
 class DiscountsList extends StatelessWidget {
   const DiscountsList({super.key});

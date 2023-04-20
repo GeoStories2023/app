@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../widgets/page_transitions.dart';
-import '../../onboarding/onboarding_screen.dart';
 import '../widgets/settings_element.dart';
 import '../widgets/settings_group.dart';
 
@@ -20,9 +18,7 @@ class SettingsHelpGroup extends StatelessWidget {
       children: [
         SettingsElement(
           l10n.settings_help_tour,
-          onTap: () => Navigator.of(context).push(slideLeftTransition(
-            const OnboardingScreen(),
-          )),
+          onTap: () {},
         ),
         SettingsElement(l10n.settings_help_about),
       ],

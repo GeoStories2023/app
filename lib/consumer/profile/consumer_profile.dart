@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geostories_app/auth/auth.dart';
-import 'package:geostories_app/consumer/profile/profile_bloc.dart';
-import 'package:geostories_app/consumer/profile/widgets/city_details.dart';
-import 'package:geostories_app/consumer/profile/widgets/consumer_statistics.dart';
-import 'package:geostories_app/consumer/profile/widgets/leaderboard.dart';
 
+import '../../auth/auth_service.dart';
 import '../../widgets/profile_picture.dart';
+import 'profile_bloc.dart';
+import 'widgets/city_details.dart';
 import 'widgets/city_statistics.dart';
+import 'widgets/consumer_statistics.dart';
+import 'widgets/leaderboard.dart';
 
 class ConsumerProfile extends StatelessWidget {
   const ConsumerProfile({super.key});

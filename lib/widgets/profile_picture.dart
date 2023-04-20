@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:geostories_app/consumer/settings/consumer_settings.dart';
-import 'package:geostories_app/widgets/page_transitions.dart';
+import 'package:geostories/widgets/page_transitions.dart';
 
 import '../auth/auth_service.dart';
+import '../consumer/settings/consumer_settings.dart';
 
 class ProfilePicture extends StatelessWidget {
   final bool? _showName;
