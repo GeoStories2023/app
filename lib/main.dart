@@ -10,6 +10,7 @@ import 'firebase_options.dart';
 import 'prefs/locale_provider.dart';
 import 'prefs/prefs.dart';
 import 'prefs/theme_provider.dart';
+import 'splash/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,7 +69,7 @@ class MyApp extends StatelessWidget {
             Locale("en"),
             Locale("de"),
           ],
-          home: const LoginPage(),
+          home: const SplashScreen(),
         );
       },
     );
