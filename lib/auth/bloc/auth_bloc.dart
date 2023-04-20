@@ -27,10 +27,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthLoginGooglePressed event,
     Emitter<AuthState> emit,
   ) async {
-    AuthService().signInWithGoogle();
-    emit(AuthLoginInProgress());
-    add(_WaitForLogin());
-    PrefsProvider().prefs.setString("signInMethod", "google");
+    try {
+      AuthService().signInWithGoogle();
+      emit(AuthLoginInProgress());
+      add(_WaitForLogin());
+      PrefsProvider().prefs.setString("signInMethod", "google");
+    } catch (e) {
+      emit(AuthLoginFailure());
+    }
   }
 
   FutureOr<void> _onLoginEmailPressed(

@@ -44,14 +44,18 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
     _Login event,
     Emitter<SplashState> emit,
   ) async {
-    emit(SplashLoginInProgress());
-    authBloc.add(AuthAutoLogin());
-    await for (var state in authBloc.stream) {
-      if (state is AuthLoginSuccess) {
-        emit(SplashLoginSuccess());
-      } else if (state is AuthLoginFailure) {
-        emit(SplashLoginFailiure());
+    try {
+      emit(SplashLoginInProgress());
+      authBloc.add(AuthAutoLogin());
+      await for (var state in authBloc.stream) {
+        if (state is AuthLoginSuccess) {
+          emit(SplashLoginSuccess());
+        } else if (state is AuthLoginFailure) {
+          emit(SplashLoginFailiure());
+        }
       }
+    } catch (e) {
+      emit(SplashAutologinFalse());
     }
   }
 

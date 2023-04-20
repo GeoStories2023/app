@@ -2,15 +2,16 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:geostories/auth/login_page.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'auth/auth.dart';
+import 'consumer/profile/profile_bloc.dart';
 import 'firebase_options.dart';
 import 'prefs/locale_provider.dart';
 import 'prefs/prefs.dart';
 import 'prefs/theme_provider.dart';
-import 'splash/splash_screen.dart';
+import 'splash/splash_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,12 +26,19 @@ void main() async {
       child: MultiProvider(
         providers: [
           Provider<PrefsProvider>(create: (context) => PrefsProvider()),
+          BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
           ChangeNotifierProvider<ThemeProvider>(
             create: (_) => ThemeProvider(),
           ),
           ChangeNotifierProvider<LocaleProvider>(
             create: (_) => LocaleProvider(),
           ),
+          BlocProvider<SplashBloc>(
+            create: (context) => SplashBloc(
+              SplashInitial(),
+              BlocProvider.of<AuthBloc>(context),
+            ),
+          )
         ],
         child: const MyApp(),
       ),
@@ -61,6 +69,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(brightness: Brightness.light),
           locale: localeProvider.locale,
           localizationsDelegates: const [
+            AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
@@ -69,7 +78,7 @@ class MyApp extends StatelessWidget {
             Locale("en"),
             Locale("de"),
           ],
-          home: const SplashScreen(),
+          home: const AuthPage(),
         );
       },
     );
