@@ -46,6 +46,11 @@ dev_dependencies:
 
 flutter:
   assets:
-      - assets/
+    - assets/
+    - assets/consumer/onboarding/
+    - assets/consumer/map/
+    - assets/icon/
+    - assets/signin/
+    - assets/signin/google/ios/2x/
   uses-material-design: true
   generate: true
