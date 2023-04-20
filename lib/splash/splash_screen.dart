@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geostories/splash/splash_bloc.dart';
 
 import '../auth/auth.dart';
+import '../consumer/consumer_homepage.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -13,7 +14,7 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       body: BlocBuilder<SplashBloc, SplashState>(builder: (context, state) {
         if (state is SplashLoginSuccess) {
-          //TODO: return homepage
+          return const ConsumerHomePage();
         } else if (state is SplashAutologinFalse) {
           return const AuthPage();
         }
