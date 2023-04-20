@@ -45,7 +45,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyB7oZ5kq5IbeBprO6YUoy8W0Pvwz5g26ZA',
-    appId: '1:666685128396:web:c001041e8ef7412b3b8c69',
+    appId: '1:666685128396:web:af4b49138031b92f3b8c69',
     messagingSenderId: '666685128396',
     projectId: 'geostories-test',
     authDomain: 'geostories-test.firebaseapp.com',
@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyBS5jhJjVqrIzg6Z-li58s96unBJ1bOoLw',
-    appId: '1:666685128396:android:c054e5c07aac9d7e3b8c69',
+    appId: '1:666685128396:android:c4651afa78219e443b8c69',
     messagingSenderId: '666685128396',
     projectId: 'geostories-test',
     storageBucket: 'geostories-test.appspot.com',
@@ -62,23 +62,23 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDd4pke1educsM1HDMn8xwgrS5ZW--oaiE',
-    appId: '1:666685128396:ios:9e70ab61d97bb3383b8c69',
+    appId: '1:666685128396:ios:76051b74f11811f23b8c69',
     messagingSenderId: '666685128396',
     projectId: 'geostories-test',
     storageBucket: 'geostories-test.appspot.com',
-    androidClientId: '666685128396-hb7q5t8p6i2ujm0bqngi7sbu9h9qqhfg.apps.googleusercontent.com',
-    iosClientId: '666685128396-p3v40343vi9p8k5b549ddpafal3k5pkc.apps.googleusercontent.com',
-    iosBundleId: 'com.example.geostoriesApp',
+    androidClientId: '666685128396-c4b2qmrksvjuqdgd4cjedobe3p68gd6s.apps.googleusercontent.com',
+    iosClientId: '666685128396-v0j0bnrrr1vpqlqel6sn9jvfp1a1sffv.apps.googleusercontent.com',
+    iosBundleId: 'com.example.geostories',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyDd4pke1educsM1HDMn8xwgrS5ZW--oaiE',
-    appId: '1:666685128396:ios:9e70ab61d97bb3383b8c69',
+    appId: '1:666685128396:ios:76051b74f11811f23b8c69',
     messagingSenderId: '666685128396',
     projectId: 'geostories-test',
     storageBucket: 'geostories-test.appspot.com',
-    androidClientId: '666685128396-hb7q5t8p6i2ujm0bqngi7sbu9h9qqhfg.apps.googleusercontent.com',
-    iosClientId: '666685128396-p3v40343vi9p8k5b549ddpafal3k5pkc.apps.googleusercontent.com',
-    iosBundleId: 'com.example.geostoriesApp',
+    androidClientId: '666685128396-c4b2qmrksvjuqdgd4cjedobe3p68gd6s.apps.googleusercontent.com',
+    iosClientId: '666685128396-v0j0bnrrr1vpqlqel6sn9jvfp1a1sffv.apps.googleusercontent.com',
+    iosBundleId: 'com.example.geostories',
   );
 }

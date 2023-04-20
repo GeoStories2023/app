@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'auth/auth.dart';
 import 'consumer/profile/profile_bloc.dart';
+import 'consumer/settings/bloc/settings_bloc.dart';
 import 'firebase_options.dart';
 import 'prefs/locale_provider.dart';
 import 'prefs/prefs.dart';
@@ -22,23 +23,24 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
+        BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
+        BlocProvider<SplashBloc>(
+          create: (context) => SplashBloc(
+            SplashInitial(),
+            BlocProvider.of<AuthBloc>(context),
+          ),
+        ),
+        BlocProvider<SettingsBloc>(create: (context) => SettingsBloc()),
       ],
       child: MultiProvider(
         providers: [
           Provider<PrefsProvider>(create: (context) => PrefsProvider()),
-          BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
           ChangeNotifierProvider<ThemeProvider>(
             create: (_) => ThemeProvider(),
           ),
           ChangeNotifierProvider<LocaleProvider>(
             create: (_) => LocaleProvider(),
           ),
-          BlocProvider<SplashBloc>(
-            create: (context) => SplashBloc(
-              SplashInitial(),
-              BlocProvider.of<AuthBloc>(context),
-            ),
-          )
         ],
         child: const MyApp(),
       ),
