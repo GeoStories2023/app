@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geostories/consumer/tour/tour_preview_map2.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+
+import '../../../widgets/page_transitions.dart';
 
 class AdventureContinueElement extends StatelessWidget {
   final String storyName;
@@ -72,7 +75,8 @@ class AdventureContinueElement extends StatelessWidget {
 
   Widget _continueAdventureButton(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () =>
+          Navigator.of(context).push(slideLeftTransition(TourPreviewMap())),
       child: const FaIcon(
         FontAwesomeIcons.angleRight,
         size: 19,

@@ -8,6 +8,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'auth/auth.dart';
 import 'consumer/profile/profile_bloc.dart';
 import 'consumer/settings/bloc/settings_bloc.dart';
+import 'consumer/tour/bloc/preview_bloc.dart';
+import 'consumer/tour/repositories/map_rest_repo.dart';
 import 'firebase_options.dart';
 import 'prefs/locale_provider.dart';
 import 'prefs/prefs.dart';
@@ -15,6 +17,7 @@ import 'prefs/theme_provider.dart';
 import 'splash/splash_bloc.dart';
 
 void main() async {
+  final MapRestRepo mapRestRepo = MapRestRepo();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -23,6 +26,7 @@ void main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
+        BlocProvider(create: (context) => PreviewBloc(mapRestRepo)),
         BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
         BlocProvider<SplashBloc>(
           create: (context) => SplashBloc(
