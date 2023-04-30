@@ -5,4 +5,6 @@ abstract class IConsumerRepo {
   Future<ConsumerStatistics> getConsumerStatistics();
 
   Future<List<Achievement>> getAchievements();
+
+  Future changeName(String name);
 }
