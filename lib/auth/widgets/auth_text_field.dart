@@ -36,9 +36,10 @@ class _AuthTextField extends State<AuthTextField> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: TextField(
+        onSubmitted: (v) => widget.controller.text = v,
         controller: widget.controller,
-        obscureText: _textHidden,
-        autocorrect: false,
+        // obscureText: _textHidden,
+        // autocorrect: false,
         decoration: InputDecoration(
           hintText: widget.hintText,
           enabledBorder: OutlineInputBorder(

@@ -98,6 +98,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await AuthService().signUpWithEmail(event.email, event.password);
       add(AuthLoginEmailPressed(event.email, event.password));
-    } catch (e) {}
+    } catch (e) {
+      // TODO: Handle error
+    }
   }
 }
