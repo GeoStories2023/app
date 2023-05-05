@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geostories/consumer/tour/position_bloc/bloc/position_bloc.dart';
+import 'package:geostories/consumer/tour/preview_bloc/preview_bloc.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:http/http.dart' as http;
 
-import 'bloc/preview_bloc.dart';
+import '../../auth/auth_service.dart';
 import 'destination_popup.dart';
 import 'models/tour_point.dart';
 
@@ -97,12 +100,31 @@ class TourPreviewMap extends StatelessWidget {
                                               Polyline(
                                                   points: state.data.tourPoints
                                                       .map((tourPoint) =>
-                                                          tourPoint.pos)
+                                                          tourPoint
+                                                              .marker.point)
                                                       .toList(),
                                                   strokeWidth: 4,
                                                   color: Colors.blue),
                                             ],
                                           ),
+                                          BlocBuilder<PositionBloc,
+                                                  PositionState>(
+                                              builder: (context, state) {
+                                            if (state is NewPlayerPosition) {
+                                              return MarkerLayer(
+                                                markers: [
+                                                  Marker(
+                                                    point: state.position,
+                                                    width: 80,
+                                                    height: 80,
+                                                    builder: (context) =>
+                                                        FlutterLogo(),
+                                                  ),
+                                                ],
+                                              );
+                                            }
+                                            return Container();
+                                          }),
                                           PopupMarkerLayerWidget(
                                             options: PopupMarkerLayerOptions(
                                               popupController:
@@ -124,7 +146,6 @@ class TourPreviewMap extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          // MarkerLayer(markers: state.data.markers),
                                         ],
                                       ),
                                     ),
@@ -132,7 +153,8 @@ class TourPreviewMap extends StatelessWidget {
                                 );
                               }
                               return const Text(
-                                  'Getting map data...\n\nTap on map when complete to refresh map data.');
+                                'Getting map data...\n\nTap on map when complete to refresh map data.',
+                              );
                             },
                           ),
                         );

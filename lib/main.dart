@@ -2,13 +2,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'auth/auth.dart';
 import 'consumer/profile/profile_bloc.dart';
 import 'consumer/settings/bloc/settings_bloc.dart';
-import 'consumer/tour/bloc/preview_bloc.dart';
+import 'consumer/tour/position_bloc/bloc/position_bloc.dart';
+import 'consumer/tour/preview_bloc/preview_bloc.dart';
 import 'consumer/tour/repositories/map_rest_repo.dart';
 import 'firebase_options.dart';
 import 'prefs/locale_provider.dart';
@@ -27,6 +29,7 @@ void main() async {
       providers: [
         BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
         BlocProvider(create: (context) => PreviewBloc(mapRestRepo)),
+        BlocProvider(create: (context) => PositionBloc()),
         BlocProvider<ProfileBloc>(create: (context) => ProfileBloc()),
         BlocProvider<SplashBloc>(
           create: (context) => SplashBloc(

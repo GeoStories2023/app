@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
+import 'package:geostories/consumer/tour/preview_bloc/preview_bloc.dart';
 import 'package:latlong2/latlong.dart';
-import 'bloc/preview_bloc.dart';
 import 'destination_popup.dart';
 import 'models/tour_point.dart';
 
