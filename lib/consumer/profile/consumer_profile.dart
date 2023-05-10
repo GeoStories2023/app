@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geostories/consumer/friends/widgets/friends_list.dart';
 
 import '../../auth/auth_service.dart';
 import '../../widgets/profile_picture.dart';
@@ -7,7 +8,6 @@ import 'profile_bloc.dart';
 import 'widgets/city_details.dart';
 import 'widgets/city_statistics.dart';
 import 'widgets/consumer_statistics.dart';
-import 'widgets/leaderboard.dart';
 
 class ConsumerProfile extends StatelessWidget {
   const ConsumerProfile({super.key});
@@ -44,7 +44,7 @@ class ConsumerProfile extends StatelessWidget {
                   const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                   const CityStatistics(),
                   const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-                  const Leaderboard(),
+                  const FriendsList(),
                 ],
               ),
             ),
