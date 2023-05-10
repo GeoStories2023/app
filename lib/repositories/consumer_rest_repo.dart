@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:geostories/auth/auth.dart';
 import 'package:geostories/bloc/models/consumer_friend.dart';
+import 'package:geostories/bloc/models/story.dart';
 import 'package:http/http.dart' as http;
 
 import '../bloc/models/achievement.dart';
@@ -14,6 +15,7 @@ class ConsumerRestRepo extends IConsumerRepo {
   final String _achievementsUrl = '/consumer/achievements';
   final String _nameUrl = '/consumer/name';
   final String _friendsUrl = '/consumer/friends';
+  final String _startedStoriesUrl = "/consumer/stories/started";
 
   ConsumerRestRepo(this.url);
 
@@ -85,4 +87,19 @@ class ConsumerRestRepo extends IConsumerRepo {
     });
   }
 
+  @override
+  Future<List<StartedStory>> getStartedStories() {
+    return http.get(Uri.parse(url + _startedStoriesUrl)).then((response) {
+      if (response.statusCode == 200) {
+        List<dynamic> json = jsonDecode(response.body);
+        List<StartedStory> stories = [];
+        for (var j in json) {
+          stories.add(StartedStory.fromJson(j));
+        }
+        return stories;
+      } else {
+        throw Exception('Failed to load friends');
+      }
+    });
+  }
 }
