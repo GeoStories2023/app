@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:geostories/repositories/runtime_consumer_repo.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -18,6 +19,8 @@ import 'splash/splash_bloc.dart';
 
 void main() async {
   final MapRestRepo mapRestRepo = MapRestRepo();
+  final RuntimeConsumerRepo consumerRepo = RuntimeConsumerRepo();
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -34,7 +37,9 @@ void main() async {
             BlocProvider.of<AuthBloc>(context),
           ),
         ),
-        BlocProvider<SettingsBloc>(create: (context) => SettingsBloc()),
+        BlocProvider<SettingsBloc>(
+          create: (context) => SettingsBloc(consumerRepo),
+        ),
       ],
       child: MultiProvider(
         providers: [
