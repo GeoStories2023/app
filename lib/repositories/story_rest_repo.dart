@@ -27,7 +27,9 @@ class StoryRestRepo extends IStoryRepo {
 
   @override
   Future<List<Story>> getStoriesInContinent(
-      String continent, String? country) async {
+    String continent,
+    String? country,
+  ) async {
     var endpoint = "$url/$_storiesEndpoint/$continent";
     if (country != null) {
       endpoint += "/$country";
