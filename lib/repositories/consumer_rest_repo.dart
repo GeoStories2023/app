@@ -16,43 +16,39 @@ class ConsumerRestRepo extends IConsumerRepo {
   ConsumerRestRepo(this.url);
 
   @override
-  Future<List<Achievement>> getAchievements() {
-    return http.get(Uri.parse(url + _achievementsUrl)).then((response) {
-      if (response.statusCode == 200) {
-        List<dynamic> achivementsJson = jsonDecode(response.body);
-        List<Achievement> achievements = [];
-        for (var achievementJson in achivementsJson) {
-          achievements.add(Achievement.fromJson(achievementJson));
-        }
-        return achievements;
-      } else {
-        throw Exception('Failed to load achievements');
+  Future<List<Achievement>> getAchievements() async {
+    var response = await http.get(Uri.parse(url + _achievementsUrl));
+    if (response.statusCode == 200) {
+      List<dynamic> achivementsJson = jsonDecode(response.body);
+      List<Achievement> achievements = [];
+      for (var achievementJson in achivementsJson) {
+        achievements.add(Achievement.fromJson(achievementJson));
       }
-    });
+      return achievements;
+    } else {
+      throw Exception('Failed to load achievements');
+    }
   }
 
   @override
-  Future<ConsumerStatistics> getConsumerStatistics() {
-    return http.get(Uri.parse(url + _consumerStatisticsUrl)).then((response) {
-      if (response.statusCode == 200) {
-        return ConsumerStatistics.fromJson(jsonDecode(response.body));
-      } else {
-        throw Exception('Failed to load consumer statistics');
-      }
-    });
+  Future<ConsumerStatistics> getConsumerStatistics() async {
+    var response = await http.get(Uri.parse(url + _consumerStatisticsUrl));
+    if (response.statusCode == 200) {
+      return ConsumerStatistics.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load consumer statistics');
+    }
   }
 
   @override
-  Future changeName(String name) {
+  Future changeName(String name) async {
     final String uid = AuthService().currentUser?.uid ?? '';
-    return http
-        .put(Uri.parse('$url$_changeNameUrl?uid=$uid&name=$name'))
-        .then((response) {
-      if (response.statusCode == 200) {
-        return;
-      } else {
-        throw Exception('Failed to change name');
-      }
-    });
+    var response =
+        await http.put(Uri.parse('$url$_changeNameUrl?uid=$uid&name=$name'));
+    if (response.statusCode == 200) {
+      return;
+    } else {
+      throw Exception('Failed to change name');
+    }
   }
 }
