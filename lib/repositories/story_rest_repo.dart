@@ -11,38 +11,37 @@ class StoryRestRepo extends IStoryRepo {
   StoryRestRepo(this.url);
 
   @override
-  Future<List<Story>> getStories() {
-    return http.get(Uri.parse(url + _storiesEndpoint)).then((response) {
-      if (response.statusCode == 200) {
-        List<dynamic> storiesJson = jsonDecode(response.body);
-        List<Story> stories = [];
-        for (var element in storiesJson) {
-          stories.add(Story.fromJson(element));
-        }
-        return stories;
-      } else {
-        return [];
+  Future<List<Story>> getStories() async {
+    var response = await http.get(Uri.parse(url + _storiesEndpoint));
+    if (response.statusCode == 200) {
+      List<dynamic> storiesJson = jsonDecode(response.body);
+      List<Story> stories = [];
+      for (var element in storiesJson) {
+        stories.add(Story.fromJson(element));
       }
-    });
+      return stories;
+    } else {
+      return [];
+    }
   }
 
   @override
-  Future<List<Story>> getStoriesInContinent(String continent, String? country) {
+  Future<List<Story>> getStoriesInContinent(
+      String continent, String? country) async {
     var endpoint = "$url/$_storiesEndpoint/$continent";
     if (country != null) {
       endpoint += "/$country";
     }
-    return http.get(Uri.parse(endpoint)).then((response) {
-      if (response.statusCode == 200) {
-        List<dynamic> storiesJson = jsonDecode(response.body);
-        List<Story> stories = [];
-        for (var element in storiesJson) {
-          stories.add(Story.fromJson(element));
-        }
-        return stories;
-      } else {
-        return [];
+    var response = await http.get(Uri.parse(endpoint));
+    if (response.statusCode == 200) {
+      List<dynamic> storiesJson = jsonDecode(response.body);
+      List<Story> stories = [];
+      for (var element in storiesJson) {
+        stories.add(Story.fromJson(element));
       }
-    });
+      return stories;
+    } else {
+      return [];
+    }
   }
 }

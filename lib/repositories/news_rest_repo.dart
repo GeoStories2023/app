@@ -11,18 +11,17 @@ class NewsRestRepo extends INewsRepo {
   NewsRestRepo(this.url);
 
   @override
-  Future<List<News>> getNews() {
-    return http.get(Uri.parse(url + _newsEndpoint)).then((response) {
-      if (response.statusCode == 200) {
-        List<dynamic> newsJson = jsonDecode(response.body);
-        List<News> news = [];
-        for (var element in newsJson) {
-          news.add(News.fromJson(element));
-        }
-        return news;
-      } else {
-        throw Exception('Failed to load news');
+  Future<List<News>> getNews() async {
+    var response = await http.get(Uri.parse(url + _newsEndpoint));
+    if (response.statusCode == 200) {
+      List<dynamic> newsJson = jsonDecode(response.body);
+      List<News> news = [];
+      for (var element in newsJson) {
+        news.add(News.fromJson(element));
       }
-    });
+      return news;
+    } else {
+      throw Exception('Failed to load news');
+    }
   }
 }
