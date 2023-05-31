@@ -13,6 +13,7 @@ class ProfileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     var bloc = BlocProvider.of<ProfileBloc>(context);
     bloc.add(ProfileNameLoaded());
+    bloc.add(ProfileLevelLoaded());
     return Row(
       children: [
         const ProfilePicture(),
@@ -42,15 +43,33 @@ class ProfileHeader extends StatelessWidget {
               child: Text(AuthService().currentUser?.email ?? ""),
             ),
             const Padding(padding: EdgeInsets.only(bottom: 2)),
-            LinearPercentIndicator(
-              width: MediaQuery.of(context).size.width * .65,
-              progressColor: Colors.purple,
-              lineHeight: 15,
-              percent: .6,
-            ),
+            _level(context),
           ],
         ),
       ],
+    );
+  }
+
+  Widget _level(BuildContext context) {
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      buildWhen: (previous, current) => current is ProfileLevelLoadSuccess,
+      builder: (context, state) {
+        if (state is ProfileLevelLoadSuccess) {
+          return LinearPercentIndicator(
+            width: MediaQuery.of(context).size.width * .65,
+            progressColor: Colors.purple,
+            lineHeight: 15,
+            percent: state.level / 100,
+          );
+        }
+        // TODO: Display shimmer.
+        return LinearPercentIndicator(
+          width: MediaQuery.of(context).size.width * .65,
+          progressColor: Colors.purple,
+          lineHeight: 15,
+          percent: .6,
+        );
+      },
     );
   }
 }

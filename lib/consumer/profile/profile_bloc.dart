@@ -23,6 +23,8 @@ class ProfileNameLoaded extends ProfileEvent {}
 
 class ProfileFriendsLoaded extends ProfileEvent {}
 
+class ProfileLevelLoaded extends ProfileEvent {}
+
 class ProfileFriendsAdded extends ProfileEvent {
   final String username;
 
@@ -49,6 +51,16 @@ class ProfileNameLoadSuccess extends ProfileState {
 
   ProfileNameLoadSuccess(this.name);
 }
+
+class ProfileLevelLoadSuccess extends ProfileState {
+  final int level;
+
+  ProfileLevelLoadSuccess(this.level);
+}
+
+class ProfileLevelLoadInProgress extends ProfileState {}
+
+class ProfileLevelLoadInError extends ProfileState {}
 
 class ProfileFriendsLoadInProgress extends ProfileState {}
 
@@ -79,6 +91,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileNameLoaded>(_onNameLoaded);
     on<ProfileFriendsLoaded>(_onFriendsLoaded);
     on<ProfileFriendsAdded>(_onFriendsAdded);
+    on<ProfileLevelLoaded>(_onLevelLoaded);
   }
 
   FutureOr<void> _onCitySelected(
@@ -139,6 +152,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async {
     try {
       await consumerRepo.addFriend(event.username);
+    } catch (e) {
+      emit(ProfileFriendsLoadError());
+    }
+  }
+
+  FutureOr<void> _onLevelLoaded(
+    ProfileLevelLoaded event,
+    Emitter<ProfileState> emit,
+  ) async {
+    try {
+      emit(ProfileLevelLoadInProgress());
+      var level = await consumerRepo.getLevel();
+      emit(ProfileLevelLoadSuccess(level));
     } catch (e) {
       emit(ProfileFriendsLoadError());
     }

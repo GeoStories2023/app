@@ -90,4 +90,9 @@ class RuntimeConsumerRepo extends IConsumerRepo {
   Future<bool> isPremium({String? uid}) async {
     return false;
   }
+
+  @override
+  Future<int> getLevel({String? uid}) async {
+    return 20;
+  }
 }

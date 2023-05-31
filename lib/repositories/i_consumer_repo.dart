@@ -32,4 +32,9 @@ abstract class IConsumerRepo {
   /// If [uid] is passed it will check the premium status of the corresponding user.
   /// otherwise will check premium status of current user.
   Future<bool> isPremium({String? uid});
+
+  /// Get the level of the user.
+  /// If [uid] is set, will return the level of that user,
+  /// otherwise will check premium status of current user.
+  Future<int> getLevel({String? uid});
 }

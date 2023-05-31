@@ -16,6 +16,7 @@ class ConsumerRestRepo extends IConsumerRepo {
   final String _achievementsUrl = '/consumer/achievements';
   final String _nameUrl = '/users';
   final String _premiumCheckUrl = '/users';
+  final String _levelUrl = '/users';
   final String _friendsUrl = '/users';
   final String _frienAddUrl = '/users/friends';
   final String _startedStoriesUrl = "/consumer/stories/started";
@@ -150,6 +151,20 @@ class ConsumerRestRepo extends IConsumerRepo {
     if (resp.statusCode == 200) {
       var json = jsonDecode(resp.body);
       return json['isPremium'];
+    } else {
+      throw Exception('Failed to premium status');
+    }
+  }
+
+  @override
+  Future<int> getLevel({String? uid}) async {
+    var uri = Uri.parse(url + _levelUrl);
+    var resp = await http.get(uri, headers: {
+      'Authorization': 'Bearer ${await AuthService().currentUser!.getIdToken()}'
+    });
+    if (resp.statusCode == 200) {
+      var json = jsonDecode(resp.body);
+      return json['xp'];
     } else {
       throw Exception('Failed to premium status');
     }
