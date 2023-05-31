@@ -30,11 +30,13 @@ class RuntimeConsumerRepo extends IConsumerRepo {
 
   List<ConsumerFriend> friends = [
     const ConsumerFriend(
+      uid: "1",
       name: "foo",
       profilePictureUrl:
           "https://www.handwerk.com/sites/default/files/styles/max_1300x1300/public/2017-08/hide-pain-harold-title-red%20-web.jpg?itok=xCzsBOrJ",
     ),
     const ConsumerFriend(
+      uid: "2",
       name: "bar",
       profilePictureUrl:
           "https://www.handwerk.com/sites/default/files/styles/max_1300x1300/public/2017-08/hide-pain-harold-title-red%20-web.jpg?itok=xCzsBOrJ",
@@ -82,5 +84,10 @@ class RuntimeConsumerRepo extends IConsumerRepo {
   @override
   Future addFriend(String username) {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> isPremium({String? uid}) async {
+    return false;
   }
 }

@@ -27,4 +27,9 @@ abstract class IConsumerRepo {
 
   /// Add [username] as a friend for the current user.
   Future addFriend(String username);
+
+  /// [true] if the user is premium [false] if not.
+  /// If [uid] is passed it will check the premium status of the corresponding user.
+  /// otherwise will check premium status of current user.
+  Future<bool> isPremium({String? uid});
 }

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geostories/consumer/profile/profile_bloc.dart';
 
 import '../widgets/profile_header.dart';
 import 'widgets/adventure_continue_list.dart';
 import 'widgets/news_list.dart';
-import 'widgets/premium.dart';
 
 class ConsumerHome extends StatelessWidget {
   const ConsumerHome({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var bloc = BlocProvider.of<ProfileBloc>(context);
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -25,14 +27,24 @@ class ConsumerHome extends StatelessWidget {
               const Padding(padding: EdgeInsets.only(top: 10)),
               const NewsList(),
               const Padding(padding: EdgeInsets.only(top: 10)),
-              SvgPicture.asset(
-                "assets/premium_ad_banner.svg",
-                width: MediaQuery.of(context).size.width,
+              FutureBuilder(
+                future: bloc.consumerRepo.isPremium(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data == false) {
+                      return SvgPicture.asset(
+                        "assets/premium_ad_banner.svg",
+                        fit: BoxFit.scaleDown,
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                      );
+                    }
+                  }
+                  return Container();
+                },
               ),
               const Padding(padding: EdgeInsets.only(top: 10)),
               const AdventureContinueList(),
-              const Padding(padding: EdgeInsets.only(top: 10)),
-              const PremiumCard(),
             ],
           ),
         ),
