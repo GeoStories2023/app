@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geostories/consumer/friends/widgets/friends_list.dart';
 
-import '../../auth/auth_service.dart';
 import '../../widgets/profile_picture.dart';
 import 'profile_bloc.dart';
 import 'widgets/city_details.dart';

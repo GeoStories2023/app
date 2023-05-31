@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geostories/bloc/models/consumer_friend.dart';
 import 'package:geostories/bloc/models/consumer_statistics.dart';
 
 import '../../repositories/i_consumer_repo.dart';
@@ -19,6 +20,14 @@ class ProfileCityClosed extends ProfileEvent {}
 class ProfileStatisticsLoaded extends ProfileEvent {}
 
 class ProfileNameLoaded extends ProfileEvent {}
+
+class ProfileFriendsLoaded extends ProfileEvent {}
+
+class ProfileFriendsAdded extends ProfileEvent {
+  final String username;
+
+  ProfileFriendsAdded(this.username);
+}
 
 abstract class ProfileState {}
 
@@ -41,6 +50,16 @@ class ProfileNameLoadSuccess extends ProfileState {
   ProfileNameLoadSuccess(this.name);
 }
 
+class ProfileFriendsLoadInProgress extends ProfileState {}
+
+class ProfileFriendsLoadSuccess extends ProfileState {
+  final List<ConsumerFriend> friends;
+
+  ProfileFriendsLoadSuccess(this.friends);
+}
+
+class ProfileFriendsLoadError extends ProfileState {}
+
 class ProfileStatisticsLoadError extends ProfileState {}
 
 class ProfileNameLoadError extends ProfileState {}
@@ -58,6 +77,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileCityClosed>(_onCityClosed);
     on<ProfileStatisticsLoaded>(_onStatisticsLoaded);
     on<ProfileNameLoaded>(_onNameLoaded);
+    on<ProfileFriendsLoaded>(_onFriendsLoaded);
+    on<ProfileFriendsAdded>(_onFriendsAdded);
   }
 
   FutureOr<void> _onCitySelected(
@@ -96,6 +117,30 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileNameLoadSuccess(name));
     } catch (e) {
       emit(ProfileNameLoadError());
+    }
+  }
+
+  FutureOr<void> _onFriendsLoaded(
+    ProfileFriendsLoaded event,
+    Emitter<ProfileState> emit,
+  ) async {
+    try {
+      emit(ProfileFriendsLoadInProgress());
+      final friends = await consumerRepo.getFriends();
+      emit(ProfileFriendsLoadSuccess(friends));
+    } catch (e) {
+      emit(ProfileFriendsLoadError());
+    }
+  }
+
+  FutureOr<void> _onFriendsAdded(
+    ProfileFriendsAdded event,
+    Emitter<ProfileState> emit,
+  ) async {
+    try {
+      await consumerRepo.addFriend(event.username);
+    } catch (e) {
+      emit(ProfileFriendsLoadError());
     }
   }
 }

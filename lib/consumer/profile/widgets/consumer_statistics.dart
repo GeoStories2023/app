@@ -38,7 +38,6 @@ class ConsumerStatistics extends StatelessWidget {
             current is ProfileStatisticsLoadSuccess ||
             current is ProfileStatisticsLoadInProgress,
         builder: (context, state) {
-          print("AAAAAAA $state");
           if (state is ProfileStatisticsLoadSuccess) {
             return statisticsElement(context, state.statistics);
           }
@@ -49,7 +48,6 @@ class ConsumerStatistics extends StatelessWidget {
   }
 
   Widget statisticsElement(BuildContext context, ConsumerStats stats) {
-    print("Here $stats");
     return Column(
       children: [
         Text("Tours: ${stats.gamesPlayed}"),

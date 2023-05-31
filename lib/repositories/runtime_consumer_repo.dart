@@ -78,4 +78,9 @@ class RuntimeConsumerRepo extends IConsumerRepo {
   Future<List<StartedStory>> getStartedStories() async {
     return startedStories;
   }
+
+  @override
+  Future addFriend(String username) {
+    throw UnimplementedError();
+  }
 }

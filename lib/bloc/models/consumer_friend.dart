@@ -9,8 +9,8 @@ class ConsumerFriend {
 
   factory ConsumerFriend.fromJson(Map<String, dynamic> json) {
     return ConsumerFriend(
-      name: json['name'],
-      profilePictureUrl: json['pictureUrl'],
+      name: json['username'],
+      profilePictureUrl: "https://companieslogo.com/img/orig/GOOG-0ed88f7c.png",
     );
   }
 

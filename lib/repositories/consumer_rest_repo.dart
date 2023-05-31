@@ -15,7 +15,8 @@ class ConsumerRestRepo extends IConsumerRepo {
   final String _consumerStatisticsUrl = '/users/statistics';
   final String _achievementsUrl = '/consumer/achievements';
   final String _nameUrl = '/users';
-  final String _friendsUrl = '/consumer/friends';
+  final String _friendsUrl = '/users';
+  final String _frienAddUrl = '/users/friends';
   final String _startedStoriesUrl = "/consumer/stories/started";
 
   ConsumerRestRepo(this.url);
@@ -89,15 +90,22 @@ class ConsumerRestRepo extends IConsumerRepo {
 
   @override
   Future<List<ConsumerFriend>> getFriends() async {
-    var uri = Uri.parse(url + _friendsUrl);
+    var uid = AuthService().currentUser!.uid;
+    var uri = Uri.parse("$url$_friendsUrl/$uid");
+    var auth = await AuthService().currentUser!.getIdToken();
+    log(auth);
     var resp = await http.get(uri, headers: {
-      'Authorization': 'Bearer ${await AuthService().currentUser!.getIdToken()}'
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $auth'
     });
     if (resp.statusCode == 200) {
-      List<dynamic> friendsJson = jsonDecode(resp.body);
+      var json = jsonDecode(resp.body);
+      List<dynamic> friendsJson = json['friends'];
       List<ConsumerFriend> friends = [];
-      for (var friendJson in friendsJson) {
-        friends.add(ConsumerFriend.fromJson(friendJson));
+      for (var j in friendsJson) {
+        print("AAAAAAAAAA ${j['friendUser']}");
+        friends.add(ConsumerFriend.fromJson(j['friendUser']));
       }
       return friends;
     } else {
@@ -121,5 +129,18 @@ class ConsumerRestRepo extends IConsumerRepo {
     } else {
       throw Exception('Failed to load friends');
     }
+  }
+
+  @override
+  Future addFriend(String username) async {
+    var uri = Uri.parse(url + _frienAddUrl);
+    var resp = await http.post(uri, headers: {
+      'Authorization': 'Bearer ${await AuthService().currentUser!.getIdToken()}'
+    }, body: {
+      'friendName': username,
+    });
+
+    print(resp.body);
+    print(resp.statusCode);
   }
 }

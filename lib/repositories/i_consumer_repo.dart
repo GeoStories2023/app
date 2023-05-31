@@ -24,4 +24,7 @@ abstract class IConsumerRepo {
 
   /// Get a list of [StartedStory] for the current user.
   Future<List<StartedStory>> getStartedStories();
+
+  /// Add [username] as a friend for the current user.
+  Future addFriend(String username);
 }

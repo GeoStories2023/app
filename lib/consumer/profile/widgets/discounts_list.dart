@@ -12,8 +12,8 @@ class DiscountsList extends StatelessWidget {
         width: MediaQuery.of(context).size.width * .9,
         child: SizedBox(
           height: MediaQuery.of(context).size.height * .15,
-          child: Wrap(
-            children: const [
+          child: const Wrap(
+            children: [
               DiscountElement(
                 text: Text("Aldi"),
                 heroTag: "aldi",
