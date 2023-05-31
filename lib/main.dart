@@ -2,8 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:geostories/bloc/news_bloc.dart';
 import 'package:geostories/repositories/consumer_rest_repo.dart';
 import 'package:geostories/repositories/i_consumer_repo.dart';
+import 'package:geostories/repositories/i_news_repo.dart';
+import 'package:geostories/repositories/news_rest_repo.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -22,6 +25,7 @@ void main() async {
   final MapRestRepo mapRestRepo = MapRestRepo();
   final IConsumerRepo consumerRepo =
       ConsumerRestRepo("http://192.168.0.234:80/api/v1");
+  final INewsRepo newsRepo = NewsRestRepo("http://192.168.0.234:80/api/v1");
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -32,6 +36,7 @@ void main() async {
       providers: [
         BlocProvider<AuthBloc>(create: (context) => AuthBloc()),
         BlocProvider(create: (context) => PreviewBloc(mapRestRepo)),
+        BlocProvider(create: (context) => NewsBloc(newsRepo)),
         BlocProvider<ProfileBloc>(
             create: (context) => ProfileBloc(consumerRepo)),
         BlocProvider<SplashBloc>(

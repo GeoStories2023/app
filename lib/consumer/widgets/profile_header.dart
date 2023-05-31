@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geostories/consumer/profile/profile_bloc.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../auth/auth_service.dart';
@@ -9,6 +11,8 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var bloc = BlocProvider.of<ProfileBloc>(context);
+    bloc.add(ProfileNameLoaded());
     return Row(
       children: [
         const ProfilePicture(),
@@ -17,11 +21,20 @@ class ProfileHeader extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                AuthService().currentUser?.displayName ?? "",
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
+              child: BlocBuilder<ProfileBloc, ProfileState>(
+                buildWhen: (previous, current) =>
+                    current is ProfileNameLoadSuccess,
+                builder: (context, state) {
+                  if (state is ProfileNameLoadSuccess) {
+                    return Text(
+                      state.name,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  }
+                  return const Text("");
+                },
               ),
             ),
             Padding(

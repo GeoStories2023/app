@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import '../auth/auth_service.dart';
 import '../bloc/models/news.dart';
 import 'i_news_repo.dart';
 
@@ -12,7 +13,13 @@ class NewsRestRepo extends INewsRepo {
 
   @override
   Future<List<News>> getNews() async {
-    var response = await http.get(Uri.parse(url + _newsEndpoint));
+    var uri = Uri.parse(url + _newsEndpoint);
+    var auth = await AuthService().currentUser!.getIdToken();
+    var response = await http.get(uri, headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $auth'
+    });
     if (response.statusCode == 200) {
       List<dynamic> newsJson = jsonDecode(response.body);
       List<News> news = [];
