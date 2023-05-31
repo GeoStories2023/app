@@ -4,9 +4,9 @@ import 'package:geostories/bloc/models/consumer_statistics.dart';
 import 'package:geostories/bloc/models/story.dart';
 
 abstract class IConsumerRepo {
-  /// Get [ConsumerStatistics] for the current user.
+  /// Get [ConsumerStats] for the current user.
   /// NOTE: Implementation will be responsible for getting the current user.
-  Future<ConsumerStatistics> getConsumerStatistics();
+  Future<ConsumerStats> getConsumerStatistics();
 
   /// Get a list of [Achievement] for the current user.
   /// NOTE: Implementation will be responsible for getting the current user.

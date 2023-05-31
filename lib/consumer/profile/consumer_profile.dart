@@ -29,13 +29,7 @@ class ConsumerProfile extends StatelessWidget {
                     ),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: Text(
-                        "The story of ${AuthService().currentUser!.displayName},",
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                        ),
-                      ),
+                      child: profileName(context),
                     ),
                   ),
                   const ProfilePicture.withEmail(),
@@ -62,6 +56,26 @@ class ConsumerProfile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget profileName(BuildContext context) {
+    var bloc = BlocProvider.of<ProfileBloc>(context);
+    bloc.add(ProfileNameLoaded());
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      buildWhen: (previous, current) => current is ProfileNameLoadSuccess,
+      builder: (context, state) {
+        if (state is ProfileNameLoadSuccess) {
+          return Text(
+            "The story of ${state.name},",
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+            ),
+          );
+        }
+        return Container();
+      },
     );
   }
 }

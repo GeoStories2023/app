@@ -41,9 +41,11 @@ class RuntimeConsumerRepo extends IConsumerRepo {
     ),
   ];
 
-  ConsumerStatistics statistics = const ConsumerStatistics(
+  ConsumerStats statistics = const ConsumerStats(
     gamesPlayed: 12,
-    topCities: ["Wicker", "Floersheim"],
+    visitedCities: [],
+    visitedCountries: [],
+    visitedContinents: [],
     collectedDiscounts: 2,
   );
 
@@ -58,7 +60,7 @@ class RuntimeConsumerRepo extends IConsumerRepo {
   }
 
   @override
-  Future<ConsumerStatistics> getConsumerStatistics() async {
+  Future<ConsumerStats> getConsumerStatistics() async {
     return statistics;
   }
 
