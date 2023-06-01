@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geostories/consumer/profile/profile_bloc.dart';
 
+import '../../repositories/i_tour_repo.dart';
+import '../../repositories/tour_rest_repo.dart';
 import '../widgets/profile_header.dart';
 import 'widgets/adventure_continue_list.dart';
 import 'widgets/news_list.dart';

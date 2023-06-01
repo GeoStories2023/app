@@ -27,13 +27,13 @@ class LoginPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Lottie.network(
-                      "https://assets2.lottiefiles.com/private_files/lf30_polnr9xa.json",
+                    Lottie.asset(
+                      "assets/signin/lottie_globe.json",
                       width: width * .5,
                       fit: BoxFit.fill,
                     ),
-                    Lottie.network(
-                      "https://assets1.lottiefiles.com/packages/lf20_szrbrL.json",
+                    Lottie.asset(
+                      "assets/signin/lottie_book.json",
                       width: width * .5,
                       fit: BoxFit.fill,
                     ),
