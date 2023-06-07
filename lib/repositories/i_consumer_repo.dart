@@ -5,16 +5,20 @@ import 'package:geostories/bloc/models/story.dart';
 
 abstract class IConsumerRepo {
   /// Get [ConsumerStats] for the current user.
-  /// NOTE: Implementation will be responsible for getting the current user.
-  Future<ConsumerStats> getConsumerStatistics();
+  /// If [uid] is passed it will get the statistics of that user.
+  /// otherwise will get stats of current user.
+  Future<ConsumerStats> getConsumerStatistics({String? uid});
 
   /// Get a list of [Achievement] for the current user.
-  /// NOTE: Implementation will be responsible for getting the current user.
-  Future<List<Achievement>> getAchievements();
+  /// If [uid] is passed it will get the achievements of that user.
+  /// otherwise will get achievements of current user.
+  Future<List<Achievement>> getAchievements({String? uid});
 
   /// Get the name for the current user.
-  /// NOTE: Implementation will be responsible for getting the current user.
   Future<String> getName();
+
+  /// Check wether or not the user has to change their name.
+  Future<bool> hasToChangeName();
 
   /// Set the current users name to [name].
   Future changeName(String name);

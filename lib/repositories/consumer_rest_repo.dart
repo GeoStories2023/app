@@ -15,8 +15,10 @@ class ConsumerRestRepo extends IConsumerRepo {
   final String _consumerStatisticsUrl = '/users/statistics';
   final String _achievementsUrl = '/consumer/achievements';
   final String _nameUrl = '/users';
+  final String _nameChangeUrl = '/users/setUsername';
   final String _premiumCheckUrl = '/users';
   final String _levelUrl = '/users';
+  final String _nameChangeRequiredUrl = '/users';
   final String _friendsUrl = '/users';
   final String _frienAddUrl = '/users/friends';
   final String _startedStoriesUrl = "/consumer/stories/started";
@@ -24,7 +26,7 @@ class ConsumerRestRepo extends IConsumerRepo {
   ConsumerRestRepo(this.url);
 
   @override
-  Future<List<Achievement>> getAchievements() async {
+  Future<List<Achievement>> getAchievements({String? uid}) async {
     var uri = Uri.parse(url + _achievementsUrl);
     var resp = await http.get(uri, headers: {
       'Authorization': 'Bearer ${await AuthService().currentUser!.getIdToken()}'
@@ -42,9 +44,9 @@ class ConsumerRestRepo extends IConsumerRepo {
   }
 
   @override
-  Future<ConsumerStats> getConsumerStatistics() async {
-    var uid = AuthService().currentUser!.uid;
-    var uri = Uri.parse("$url$_consumerStatisticsUrl/$uid");
+  Future<ConsumerStats> getConsumerStatistics({String? uid}) async {
+    var uid_ = uid ?? AuthService().currentUser!.uid;
+    var uri = Uri.parse("$url$_consumerStatisticsUrl/$uid_");
     var resp = await http.get(uri, headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -59,10 +61,12 @@ class ConsumerRestRepo extends IConsumerRepo {
 
   @override
   Future changeName(String name) async {
-    final String uid = AuthService().currentUser?.uid ?? '';
-    var uri = Uri.parse('$url$_nameUrl?uid=$uid&name=$name');
+    final String uid = AuthService().currentUser!.uid;
+    var uri = Uri.parse('$url$_nameChangeUrl/$uid');
     var resp = await http.put(uri, headers: {
       'Authorization': 'Bearer ${await AuthService().currentUser!.getIdToken()}'
+    }, body: {
+      'username': name,
     });
     if (resp.statusCode == 200) {
       return;
@@ -167,6 +171,20 @@ class ConsumerRestRepo extends IConsumerRepo {
       return json['xp'];
     } else {
       throw Exception('Failed to premium status');
+    }
+  }
+
+  @override
+  Future<bool> hasToChangeName() async {
+    var uri = Uri.parse(url + _nameChangeRequiredUrl);
+    var resp = await http.get(uri, headers: {
+      'Authorization': 'Bearer ${await AuthService().currentUser!.getIdToken()}'
+    });
+    if (resp.statusCode == 200) {
+      var json = jsonDecode(resp.body);
+      return json['askUsername'];
+    } else {
+      throw Exception('Failed to check name change');
     }
   }
 }

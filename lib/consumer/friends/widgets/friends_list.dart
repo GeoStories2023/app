@@ -92,8 +92,9 @@ class FriendsList extends StatelessWidget {
     TextEditingController controller = TextEditingController();
     return AlertDialog(
       content: SizedBox(
-        height: MediaQuery.of(context).size.height * .3,
+        height: MediaQuery.of(context).size.height * .2,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text("Username:"),
             TextField(
@@ -117,11 +118,11 @@ class FriendsList extends StatelessWidget {
       ),
       actionsAlignment: MainAxisAlignment.spaceEvenly,
       actions: [
-        ElevatedButton(
+        TextButton(
           onPressed: () => Navigator.of(context).pop(),
           child: const Text("Cancel"),
         ),
-        ElevatedButton(
+        TextButton(
           onPressed: () => bloc.add(ProfileFriendsAdded(controller.text)),
           child: const Text("Add"),
         ),

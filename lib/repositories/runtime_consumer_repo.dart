@@ -57,12 +57,12 @@ class RuntimeConsumerRepo extends IConsumerRepo {
   }
 
   @override
-  Future<List<Achievement>> getAchievements() async {
+  Future<List<Achievement>> getAchievements({String? uid}) async {
     return achievements;
   }
 
   @override
-  Future<ConsumerStats> getConsumerStatistics() async {
+  Future<ConsumerStats> getConsumerStatistics({String? uid}) async {
     return statistics;
   }
 
@@ -94,5 +94,10 @@ class RuntimeConsumerRepo extends IConsumerRepo {
   @override
   Future<int> getLevel({String? uid}) async {
     return 20;
+  }
+
+  @override
+  Future<bool> hasToChangeName() async {
+    return false;
   }
 }

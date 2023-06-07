@@ -28,20 +28,16 @@ class DiscountsList extends StatelessWidget {
           child: const Wrap(
             children: [
               DiscountElement(
-                text: Text("Aldi"),
-                heroTag: "aldi",
+                text: Text("Café Thiering"),
+                heroTag: "cafe",
               ),
               DiscountElement(
-                text: Text("Lidl"),
-                heroTag: "lidl",
+                text: Text("Blumen Ewert"),
+                heroTag: "blumen",
               ),
               DiscountElement(
-                text: Text("Netto"),
-                heroTag: "netto",
-              ),
-              DiscountElement(
-                text: Text("Penny"),
-                heroTag: "penny",
+                text: Text("Ebbelwoi Sterz"),
+                heroTag: "ebbelwoi",
               ),
             ],
           ),
