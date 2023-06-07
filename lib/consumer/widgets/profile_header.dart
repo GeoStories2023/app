@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:geostories/consumer/profile/profile_bloc.dart';
+import 'package:geostories/repositories/i_consumer_repo.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../auth/auth_service.dart';
@@ -46,7 +48,31 @@ class ProfileHeader extends StatelessWidget {
             _level(context),
           ],
         ),
+        const Spacer(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: _premiumSymbol(context, bloc.consumerRepo),
+        ),
       ],
+    );
+  }
+
+  Widget _premiumSymbol(BuildContext context, IConsumerRepo repo) {
+    return FutureBuilder(
+      future: repo.isPremium(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.data == true) {
+            return SvgPicture.asset(
+              "assets/premium_globus.svg",
+              fit: BoxFit.scaleDown,
+              width: MediaQuery.of(context).size.width,
+              height: 50,
+            );
+          }
+        }
+        return Container();
+      },
     );
   }
 

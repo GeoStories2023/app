@@ -7,6 +7,19 @@ class DiscountsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _header(context),
+        const Divider(),
+        _discounts(context),
+      ],
+    );
+  }
+
+  Widget _discounts(BuildContext context) {
     return Center(
       child: SizedBox(
         width: MediaQuery.of(context).size.width * .9,
@@ -34,6 +47,21 @@ class DiscountsList extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _header(BuildContext context) {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 5),
+          child: Text(
+            "Your Discounts",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
+        ),
+      ],
     );
   }
 }
