@@ -20,8 +20,10 @@ class TourData {
 
   factory TourData.fromJson(Map<String, dynamic> json) {
     List<TourPoint> tourPoints = [];
-    for (var tourPointData in json["tourPoints"]) {
-      tourPoints.add(TourPoint.fromJson(tourPointData));
+    if (json.containsKey("tourPoints")) {
+      for (var tourPointData in json["tourPoints"]) {
+        tourPoints.add(TourPoint.fromJson(tourPointData));
+      }
     }
 
     String tourId = json["id"];

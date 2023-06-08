@@ -1,23 +1,65 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geostories/consumer/tour/repositories/i_map_repo.dart';
+import 'package:geostories/consumer/tour/repositories/map_rest_repo.dart';
+import 'package:geostories/consumer/tour/tour_running_map.dart';
+import 'package:geostories/consumer/tour/widgets/tour_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
-import 'bloc/preview_bloc.dart';
-import 'destination_popup.dart';
+
+import '../../widgets/page_transitions.dart';
+import 'models/started_tour_data.dart';
+import 'models/tour_data.dart';
 import 'models/tour_point.dart';
 
 class TourPreviewMap extends StatefulWidget {
-  const TourPreviewMap({Key? key}) : super(key: key);
+  final String tourId;
+  final String url = "http://192.168.43.127";
+  const TourPreviewMap({super.key, required this.tourId});
 
   @override
   State<TourPreviewMap> createState() => _TourPreviewMapState();
 }
 
 class _TourPreviewMapState extends State<TourPreviewMap> {
-  late Future<List<Polyline>> polylines;
-  final PopupController _popupLayerController = PopupController();
+  MapController mapController = MapController();
+  bool canMove = false;
+  LatLng? lastPosition;
+  late StreamSubscription positionStream;
+
+  @override
+  void initState() {
+    const LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.bestForNavigation,
+      distanceFilter: 0,
+    );
+
+    Geolocator.getCurrentPosition().then((value) {
+      lastPosition = LatLng(value.latitude, value.longitude);
+    });
+    positionStream =
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((position) {
+      try {
+        if (!canMove) {
+          var pos = LatLng(position.latitude, position.longitude);
+          lastPosition = pos;
+        }
+      } catch (e) {
+        print(e);
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    positionStream.cancel();
+    super.dispose();
+  }
 
   List<Marker> tourPointToMarker(List<TourPoint> tourPoints) {
     List<Marker> markers = [];
@@ -30,107 +72,186 @@ class _TourPreviewMapState extends State<TourPreviewMap> {
   }
 
   @override
-  void initState() {
-    polylines = Future.value([
-      Polyline(
-        points: [
-          LatLng(50.5, -0.09),
-          LatLng(51.3498, -6.2603),
-          LatLng(53.8566, 2.3522),
-        ],
-        strokeWidth: 50,
-        color: Colors.amber,
-      ),
-    ]);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    //IMapRepo repo = RuntimeRepo();
+    IMapRepo repo = MapRestRepo(widget.url);
     return Scaffold(
-        appBar: AppBar(
-          title: ElevatedButton(
-              onPressed: () =>
-                  context.read<PreviewBloc>()..add(const LoadPreview()),
-              child: const Text('Looks like a RaisedButton')),
-        ),
-        body: BlocBuilder<PreviewBloc, PreviewState>(
-          buildWhen: (previous, current) => current is PreviewLoaded,
-          builder: (context, state) {
-            if (state is PreviewLoaded) {
-              return Padding(
-                padding: const EdgeInsets.all(8),
-                child: FutureBuilder<List<Polyline>>(
-                  future: polylines,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<List<Polyline>> snapshot) {
-                    debugPrint('snapshot: ${snapshot.hasData}');
-                    if (snapshot.hasData) {
-                      return Column(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(top: 8, bottom: 8),
-                            child: Text('Polylines'),
-                          ),
-                          Flexible(
-                            child: FlutterMap(
-                              options: MapOptions(
-                                onTap: (tapPosition, point) =>
-                                    _popupLayerController.hideAllPopups(),
-                                center: LatLng(51.5, -0.09),
-                                zoom: 5,
-                              ),
-                              children: [
-                                TileLayer(
-                                  urlTemplate:
-                                      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                  userAgentPackageName:
-                                      'dev.fleaflet.flutter_map.example',
-                                ),
-                                PolylineLayer(
-                                  polylines: [
-                                    Polyline(
-                                        points: state.data.tourPoints
-                                            .map((tourPoint) => tourPoint.pos)
-                                            .toList(),
-                                        strokeWidth: 4,
-                                        color: Colors.purple),
-                                  ],
-                                ),
-                                PopupMarkerLayerWidget(
-                                  options: PopupMarkerLayerOptions(
-                                    popupController: _popupLayerController,
-                                    markers: tourPointToMarker(
-                                        state.data.tourPoints),
-                                    markerRotateAlignment:
-                                        PopupMarkerLayerOptions
-                                            .rotationAlignmentFor(
-                                                AnchorAlign.top),
-                                    popupBuilder:
-                                        (BuildContext context, Marker marker) =>
-                                            DestinationPopup(
-                                      state.data.tourPoints.firstWhere(
-                                          (tourPoint) =>
-                                              tourPoint.marker == marker),
-                                    ),
-                                  ),
-                                ),
-                                // MarkerLayer(markers: state.data.markers),
-                              ],
+      body: SafeArea(
+        child: Stack(
+          alignment: AlignmentDirectional.topCenter,
+          children: [
+            FutureBuilder(
+              //"7971b05e-e10c-430e-ba3c-6db1f91bc082"
+              future: repo.getTour(widget.tourId),
+              builder:
+                  (BuildContext context, AsyncSnapshot<TourData> snapshot) {
+                if (!snapshot.hasData) return const CircularProgressIndicator();
+                return Column(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: IconButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        icon: const FaIcon(FontAwesomeIcons.angleLeft),
+                      ),
+                    ),
+                    const Align(
+                        alignment: Alignment.topCenter,
+                        child: Text("Story of Bremen",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold))),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        child: TourMap(
+                          tourData: Future.value(snapshot.data),
+                          mapController: mapController,
+                          centerPosition: LatLng(1, 1),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () async {
+                                  repo.getStartedTours().then((value) {
+                                    StartedTour? startedTour;
+                                    if (value.isNotEmpty) {
+                                      startedTour = value.firstWhere(
+                                          (element) =>
+                                              element.tourData.id ==
+                                              snapshot.data?.id);
+                                      Navigator.of(context).push(
+                                          slideLeftTransition(TourRunningMap(
+                                        startedTour: startedTour,
+                                        repo: repo,
+                                      )));
+                                    } else {
+                                      repo.startTour(snapshot.data!.id).then(
+                                          (value) => Navigator.of(context).push(
+                                                  slideLeftTransition(
+                                                      TourRunningMap(
+                                                startedTour: value,
+                                                repo: repo,
+                                              ))));
+                                    }
+                                  });
+                                },
+                                child: const Text("Start Tour")),
+                            const Text(
+                              "Beschreibung",
+                              style: TextStyle(
+                                  fontSize: 17, fontWeight: FontWeight.bold),
                             ),
-                          ),
-                        ],
-                      );
-                    }
-                    return const Text(
-                        'Getting map data...\n\nTap on map when complete to refresh map data.');
-                  },
-                ),
-              );
-            } else {
-              return const CircularProgressIndicator(color: Colors.orange);
-            }
-          },
-        ));
+                            Text(
+                              snapshot.data!.description,
+                              style: const TextStyle(
+                                fontSize: 17,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_map/flutter_map.dart';
+// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:geostories/consumer/tour/position_bloc/bloc/position_bloc.dart';
+// import 'package:geostories/consumer/tour/widgets/tour_current_position_layer.dart';
+// import 'package:geostories/consumer/tour/widgets/tour_map.dart';
+// import 'package:geostories/consumer/tour/widgets/tour_path_layer.dart';
+// import 'package:geostories/consumer/tour/widgets/tour_popup_layer.dart';
+// import 'package:latlong2/latlong.dart';
+
+// import 'models/tour_point.dart';
+
+// class TourPreviewMap extends StatelessWidget {
+//   MapController mapController = MapController();
+
+//   TourPreviewMap({super.key});
+
+//   List<Marker> tourPointToMarker(List<TourPoint> tourPoints) {
+//     List<Marker> markers = [];
+//     for (TourPoint tourPoint in tourPoints) {
+//       if (tourPoint.type != TourPointType.waypoint) {
+//         markers.add(tourPoint.marker);
+//       }
+//     }
+//     return markers;
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: SafeArea(
+//         child: Stack(
+//           alignment: AlignmentDirectional.topCenter,
+//           children: [
+//             Column(
+//               children: [
+//                 Align(
+//                   alignment: Alignment.topLeft,
+//                   child: IconButton(
+//                     onPressed: () => Navigator.of(context).pop(),
+//                     icon: const FaIcon(FontAwesomeIcons.angleLeft),
+//                   ),
+//                 ),
+//                 const Align(
+//                     alignment: Alignment.topCenter,
+//                     child: Text("Story of Bremen",
+//                         style: TextStyle(
+//                             fontSize: 20, fontWeight: FontWeight.bold))),
+//                 SizedBox(
+//                   height: 300,
+//                   child: BlocBuilder<PositionBloc, PositionState>(
+//                       builder: (context, state) {
+//                     if (state is NewPlayerPosition) {
+//                       TourMap(
+//                         mapController: mapController,
+//                         centerPosition: LatLng(1, 1),
+//                       );
+//                     }
+//                     return Container();
+//                   }),
+//                 )
+//               ],
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

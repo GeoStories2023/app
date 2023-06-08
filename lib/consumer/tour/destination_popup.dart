@@ -43,7 +43,7 @@ class DestinationPopup extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              tourPoint.description,
+              tourPoint.name,
               overflow: TextOverflow.fade,
               softWrap: false,
               style: const TextStyle(
@@ -53,8 +53,14 @@ class DestinationPopup extends StatelessWidget {
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
             Text(
-              'Position: ${tourPoint.pos.latitude}, ${tourPoint.pos.longitude}',
+              tourPoint.description,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontSize: 12.0),
+            ),
+            Text(
+              'Position: ${tourPoint.marker.point.latitude}, ${tourPoint.marker.point.longitude}',
+              style: const TextStyle(fontSize: 9.0),
             ),
           ],
         ),
