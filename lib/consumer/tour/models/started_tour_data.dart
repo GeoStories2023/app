@@ -1,7 +1,4 @@
-import 'package:flutter_map/flutter_map.dart';
 import 'package:geostories/consumer/tour/models/tour_data.dart';
-
-import 'tour_point.dart';
 
 class StartedTour {
   final String id;
@@ -27,15 +24,12 @@ class StartedTour {
     //String dateEnded = json["dateEnded"];
     TourData tourData = TourData.fromJson(json["tour"]);
     List<String> visitedTourPointIds = [];
-    print("hello");
-    //json.entries.forEach((entry) => print(entry.key));
     if (json.keys.contains("visitedTourPoints")) {
       visitedTourPointIds = (json["visitedTourPoints"] as List)
           .map(
             (e) => e["tourPointId"].toString(),
           )
           .toList();
-      print("Hello " + visitedTourPointIds.toString());
     }
 
     //visitedTourPoints = json["visitedTourPoints"]

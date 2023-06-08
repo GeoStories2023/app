@@ -3,7 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../repositories/i_tour_repo.dart';
 import '../../repositories/tour_rest_repo.dart';
+import '../../widgets/page_transitions.dart';
 import '../tour/models/tour_info.dart';
+import '../tour/tour_preview_map.dart';
 import 'widgets/discover_world_map.dart';
 
 class ConsumerDiscover extends StatelessWidget {
@@ -27,7 +29,7 @@ class ConsumerDiscover extends StatelessWidget {
   }
 
   Widget _tourWidget(BuildContext context) {
-    final ITourRepo tourRepo = TourRestRepo("http://10.109.253.172:81/api/v1");
+    final ITourRepo tourRepo = TourRestRepo("http://192.168.43.127:81/api/v1");
     return FutureBuilder(
       future: tourRepo.getTours(),
       builder: (context, snapshot) {
@@ -53,7 +55,10 @@ class ConsumerDiscover extends StatelessWidget {
                   "https://www.handwerk.com/sites/default/files/styles/max_1300x1300/public/2017-08/hide-pain-harold-title-red%20-web.jpg?itok=xCzsBOrJ",
             ),
             trailing: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context)
+                    .push(slideLeftTransition(TourPreviewMap(tourId: t.id)));
+              },
               icon: const FaIcon(FontAwesomeIcons.angleRight),
             ),
             subtitle: Text(t.description ?? ""),

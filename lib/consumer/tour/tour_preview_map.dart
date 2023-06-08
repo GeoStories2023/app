@@ -6,7 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geostories/consumer/tour/repositories/i_map_repo.dart';
 import 'package:geostories/consumer/tour/repositories/map_rest_repo.dart';
-import 'package:geostories/consumer/tour/repositories/map_runtime_repo.dart';
 import 'package:geostories/consumer/tour/tour_running_map.dart';
 import 'package:geostories/consumer/tour/widgets/tour_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -17,9 +16,9 @@ import 'models/tour_data.dart';
 import 'models/tour_point.dart';
 
 class TourPreviewMap extends StatefulWidget {
-  String tourId;
-  String url = "http://192.168.43.127";
-  TourPreviewMap({super.key, required this.tourId});
+  final String tourId;
+  final String url = "http://192.168.43.127";
+  const TourPreviewMap({super.key, required this.tourId});
 
   @override
   State<TourPreviewMap> createState() => _TourPreviewMapState();
@@ -86,7 +85,7 @@ class _TourPreviewMapState extends State<TourPreviewMap> {
               future: repo.getTour(widget.tourId),
               builder:
                   (BuildContext context, AsyncSnapshot<TourData> snapshot) {
-                if (!snapshot.hasData) return Container();
+                if (!snapshot.hasData) return const CircularProgressIndicator();
                 return Column(
                   children: [
                     Align(

@@ -67,7 +67,6 @@ class PreviewBloc extends Bloc<PreviewEvent, PreviewState> {
         description: "test",
         xp: 1,
         city: "bremen");
-    print("object1");
     emit(
       PreviewLoaded(
         data: data,

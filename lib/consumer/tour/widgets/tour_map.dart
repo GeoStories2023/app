@@ -50,21 +50,6 @@ class _TourMapState extends State<TourMap> {
         Geolocator.getPositionStream(locationSettings: locationSettings)
             .listen((position) {
       var newPos = LatLng(position.latitude, position.longitude);
-      if (widget.startedTour != null) {
-        tourData?.tourPoints.forEach(
-          (tourPoint) {
-            double distance = Geolocator.distanceBetween(
-                newPos.latitude,
-                newPos.longitude,
-                tourPoint.pos.latitude,
-                tourPoint.pos.longitude);
-            if (distance > 30) {
-              print("object" + tourPoint.name);
-              //widget.repo.setTourpointVisited("", tourPoint.id);
-            }
-          },
-        );
-      }
 
       setState(() {
         currentPosition = newPos;
@@ -85,7 +70,6 @@ class _TourMapState extends State<TourMap> {
       if (tourPoint.type != TourPointType.waypoint) {
         Marker marker = tourPoint.marker;
         if (widget.startedTour != null) {
-          print(widget.startedTour?.visitedTourPointIds);
           if (widget.startedTour!.visitedTourPointIds.contains(tourPoint.id)) {
             marker = TourPoint.createMarker(
                 tourPoint.pos, tourPoint.type, Colors.green);
