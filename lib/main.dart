@@ -24,8 +24,8 @@ import 'splash/splash_bloc.dart';
 void main() async {
   final MapRestRepo mapRestRepo = MapRestRepo();
   final IConsumerRepo consumerRepo =
-      ConsumerRestRepo("http://192.168.0.234:82/api/v1");
-  final INewsRepo newsRepo = NewsRestRepo("http://192.168.0.234:82/api/v1");
+      ConsumerRestRepo("http://10.109.211.83/api/v1");
+  final INewsRepo newsRepo = NewsRestRepo("http://10.109.211.83/api/v1");
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
