@@ -54,6 +54,8 @@ class DestinationPopup extends StatelessWidget {
             const Padding(padding: EdgeInsets.symmetric(vertical: 4.0)),
             Text(
               tourPoint.description,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(fontSize: 12.0),
             ),
             Text(
