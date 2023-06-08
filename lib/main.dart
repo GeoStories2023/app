@@ -19,7 +19,7 @@ import 'prefs/theme_provider.dart';
 import 'splash/splash_bloc.dart';
 
 void main() async {
-  final MapRestRepo mapRestRepo = MapRestRepo();
+  final MapRestRepo mapRestRepo = MapRestRepo("192.168.196.219:80");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

@@ -20,6 +20,33 @@ class TourPoint {
     required this.description,
     required this.marker,
   });
+  static Marker createMarker(LatLng position, TourPointType type, Color color) {
+    const double markerSize = 30;
+
+    IconData icon;
+    switch (type) {
+      case TourPointType.shop:
+        icon = Icons.house;
+        break;
+      case TourPointType.waypoint:
+        icon = Icons.pin_drop;
+        break;
+      default:
+        icon = Icons.push_pin;
+    }
+    Marker marker = Marker(
+      width: markerSize,
+      height: markerSize,
+      point: position,
+      anchorPos: AnchorPos.align(AnchorAlign.center),
+      builder: (ctx) => Icon(
+        icon,
+        color: color,
+        size: markerSize,
+      ),
+    );
+    return marker;
+  }
 
   factory TourPoint.fromJson(Map<String, dynamic> json) {
     const double markerSize = 30;
@@ -33,28 +60,7 @@ class TourPoint {
     double longitude = double.parse(json["longitude"].toString());
     LatLng position = LatLng(latitude, longitude);
 
-    IconData icon;
-    switch (type) {
-      case TourPointType.shop:
-        icon = Icons.house;
-        break;
-      case TourPointType.waypoint:
-        icon = Icons.pin_drop;
-        break;
-      default:
-        icon = Icons.push_pin;
-    }
-
-    Marker marker = Marker(
-      width: markerSize,
-      height: markerSize,
-      point: position,
-      anchorPos: AnchorPos.align(AnchorAlign.center),
-      builder: (ctx) => Icon(
-        icon,
-        size: markerSize,
-      ),
-    );
+    Marker marker = createMarker(position, type, Colors.black);
 
     return TourPoint(
       id: id,

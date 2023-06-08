@@ -1,8 +1,11 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_marker_popup/extension_api.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geostories/consumer/tour/models/tour_point.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../models/tour_data.dart';
@@ -13,50 +16,62 @@ part 'preview_state.dart';
 class PreviewBloc extends Bloc<PreviewEvent, PreviewState> {
   final IMapRepo repo;
   late LatLng position;
+  final PopupController popupLayerController = PopupController();
 
   PreviewBloc(this.repo) : super(PreviewInitial()) {
-    on<LoadPreview>((event, emit) async {
-      //PermissionStatus status = await Permission.location.request();
-      bool serviceEnabled;
-      LocationPermission permission;
+    on<LoadPreview>(_onLoadPreview);
+  }
 
-      // Test if location services are enabled.
-      serviceEnabled = await Geolocator.isLocationServiceEnabled();
-      if (!serviceEnabled) {
-        // Location services are not enabled don't continue
-        // accessing the position and request users of the
-        // App to enable the location services.
-        return Future.error('Location services are disabled.');
-      }
-
-      permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          // Permissions are denied, next time you could try
-          // requesting permissions again (this is also where
-          // Android's shouldShowRequestPermissionRationale
-          // returned true. According to Android guidelines
-          // your App should show an explanatory UI now.
-          return Future.error('Location permissions are denied');
-        }
-      }
-
-      if (permission == LocationPermission.deniedForever) {
-        // Permissions are denied forever, handle appropriately.
-        return Future.error(
-            'Location permissions are permanently denied, we cannot request permissions.');
-      }
-      TourData data =
-          await repo.getTour('4e4be34b-6b96-4af0-8e2b-f26d8276e558');
-
-      emit(
-        PreviewLoaded(
-          data: data,
-        ),
-      );
-    });
-
-    add(const LoadPreview());
+  FutureOr<void> _onLoadPreview(
+    LoadPreview event,
+    Emitter<PreviewState> emit,
+  ) async {
+    //TourData data = await repo.getTour('4e4be34b-6b96-4af0-8e2b-f26d8276e558');
+    TourData data = TourData(
+        id: "123",
+        tourPoints: [
+          TourPoint(
+              id: "5",
+              name: "Yeet",
+              type: TourPointType.shop,
+              pos: LatLng(10, 50),
+              description: "description",
+              marker: Marker(
+                width: 20,
+                height: 20,
+                point: LatLng(10, 50),
+                anchorPos: AnchorPos.align(AnchorAlign.center),
+                builder: (ctx) => const Icon(
+                  Icons.abc,
+                  size: 20,
+                ),
+              )),
+          TourPoint(
+              id: "3",
+              name: "Yeet2",
+              type: TourPointType.shop,
+              pos: LatLng(50, 8),
+              description: "description",
+              marker: Marker(
+                width: 20,
+                height: 20,
+                point: LatLng(50, 8),
+                anchorPos: AnchorPos.align(AnchorAlign.center),
+                builder: (ctx) => const Icon(
+                  Icons.abc,
+                  size: 20,
+                ),
+              ))
+        ],
+        name: "test",
+        description: "test",
+        xp: 1,
+        city: "bremen");
+    print("object1");
+    emit(
+      PreviewLoaded(
+        data: data,
+      ),
+    );
   }
 }
