@@ -5,7 +5,8 @@ abstract class PositionEvent {
 }
 
 class NewPosition extends PositionEvent {
-  const NewPosition();
+  final LatLng position;
+  const NewPosition(this.position);
 }
 
 class InitialPositionRequested extends PositionEvent {

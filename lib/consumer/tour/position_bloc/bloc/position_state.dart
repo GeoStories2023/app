@@ -15,3 +15,11 @@ class NewPlayerPosition extends PositionState {
   @override
   List<Object> get properties => [position];
 }
+
+class StreamStarted extends PositionState {
+  final Stream<Position> positionStream;
+  const StreamStarted({required this.positionStream});
+
+  @override
+  List<Object> get properties => [positionStream];
+}

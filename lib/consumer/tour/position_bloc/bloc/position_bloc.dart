@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -6,30 +9,60 @@ part 'position_event.dart';
 part 'position_state.dart';
 
 class PositionBloc extends Bloc<PositionEvent, PositionState> {
+  final MapController mapController = MapController();
   PositionBloc() : super(PositionInitial()) {
+    on<InitialPositionRequested>(_onInitialPositionRequested);
+    on<NewPosition>(_onNewPosition);
+  }
+
+  FutureOr<void> _onInitialPositionRequested(
+      InitialPositionRequested event, Emitter<PositionState> emit) async {
     const LocationSettings locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 100,
+      accuracy: LocationAccuracy.bestForNavigation,
+      distanceFilter: 0,
     );
 
-    on<InitialPositionRequested>(
-      (event, emit) async {
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position? position) {
-          if (position != null) {
-            emit(NewPlayerPosition(
-                position: LatLng(position.latitude, position.longitude)));
-          }
-          print(position == null
-              ? 'Unknown'
-              : '${position.latitude.toString()}, ${position.longitude.toString()}');
-        });
-        Position pos = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.best,
-            forceAndroidLocationManager: true);
-        emit(NewPlayerPosition(position: LatLng(pos.latitude, pos.longitude)));
-      },
-    );
-    add(InitialPositionRequested());
+    //PermissionStatus status = await Permission.location.request();
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+    permission = await Geolocator.requestPermission();
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    var stream =
+        Geolocator.getPositionStream(locationSettings: locationSettings);
+
+    emit(StreamStarted(positionStream: stream));
+  }
+
+  FutureOr<void> _onNewPosition(
+      NewPosition event, Emitter<PositionState> emit) {
+    emit(NewPlayerPosition(position: event.position));
   }
 }
