@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geostories/repositories/i_consumer_repo.dart';
 
 abstract class SettingsEvent {}
 
@@ -25,7 +26,9 @@ class SettingsShowPrivacyOptIn extends SettingsState {}
 class SettingsHidePrivacyOptIn extends SettingsState {}
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  SettingsBloc() : super(SettingsInitial()) {
+  final IConsumerRepo consumerRepo;
+
+  SettingsBloc(this.consumerRepo) : super(SettingsInitial()) {
     on<SettingsLanguageChangeSelected>(_onLanguageChangeSelected);
     on<SettingsLanguageChanged>(_onLanguageChanged);
     on<SettingsPrivacyOptInSelected>(_onPrivacyOptInSelected);

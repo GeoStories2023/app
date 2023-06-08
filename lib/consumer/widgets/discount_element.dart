@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+import 'package:geostories/consumer/widgets/qr_scanner_widget.dart';
 
 class DiscountElement extends StatelessWidget {
   // TODO: Replace with generated value
@@ -35,11 +35,7 @@ class DiscountElement extends StatelessWidget {
               content: SizedBox(
                 width: MediaQuery.of(context).size.width * .9,
                 height: MediaQuery.of(context).size.width * .9,
-                child: QrImage(
-                  data: text.toString(),
-                  version: QrVersions.auto,
-                  padding: const EdgeInsets.all(0),
-                ),
+                child: const QrScannerWidget(),
               ),
             );
           },

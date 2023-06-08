@@ -1,8 +1,11 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:geostories/bloc/news_bloc.dart';
 
+import '../../../bloc/models/news.dart';
 import 'news_card.dart';
 
 class NewsList extends StatefulWidget {
@@ -14,16 +17,11 @@ class NewsList extends StatefulWidget {
 
 class _NewsListState extends State<NewsList> {
   final CarouselController _controller = CarouselController();
-  int _currPage = 0;
-  final List<Widget> _pages = [
-    const NewsCard(title: "Nils", content: "Macht zeug"),
-    const NewsCard(title: "Noah", content: "Clicky bunti"),
-    const NewsCard(title: "Janis", content: "REST-API"),
-    const NewsCard(title: "Julius", content: "REST-API"),
-  ];
 
   @override
   void initState() {
+    var bloc = BlocProvider.of<NewsBloc>(context);
+    bloc.add(NewsLoad());
     super.initState();
   }
 
@@ -62,18 +60,13 @@ class _NewsListState extends State<NewsList> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * .80,
                 height: 150,
-                child: CarouselSlider(
-                  carouselController: _controller,
-                  items: _pages,
-                  options: CarouselOptions(
-                    viewportFraction: 1,
-                    enlargeCenterPage: true,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _currPage = index;
-                      });
-                    },
-                  ),
+                child: BlocBuilder<NewsBloc, NewsState>(
+                  builder: (context, state) {
+                    if (state is NewsLoaded) {
+                      return _newsCarousell(state.news);
+                    }
+                    return const Center(child: CircularProgressIndicator());
+                  },
                 ),
               ),
               Align(
@@ -91,31 +84,20 @@ class _NewsListState extends State<NewsList> {
               ),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: _pages.asMap().entries.map((e) {
-              return GestureDetector(
-                onTap: () {
-                  _controller.jumpToPage(e.key);
-                },
-                child: Container(
-                  width: 12.0,
-                  height: 12.0,
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 8.0,
-                    horizontal: 4.0,
-                  ),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.black.withOpacity(
-                      _currPage == e.key ? 1 : .4,
-                    ),
-                  ),
-                ),
-              );
-            }).toList(),
-          ),
         ],
+      ),
+    );
+  }
+
+  Widget _newsCarousell(List<News> news) {
+    List<Widget> newsCards =
+        news.map((e) => NewsCard(title: e.title, content: e.content)).toList();
+    return CarouselSlider(
+      carouselController: _controller,
+      items: newsCards,
+      options: CarouselOptions(
+        viewportFraction: 1,
+        enlargeCenterPage: true,
       ),
     );
   }

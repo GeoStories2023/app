@@ -9,7 +9,7 @@ class CityStatistics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var l10n = AppLocalizations.of(context);
-    List<CityElement> _cities = [
+    List<CityElement> cities = [
       const CityElement(
         "Wicker",
         imageUrl:
@@ -57,7 +57,7 @@ class CityStatistics extends StatelessWidget {
           child: Wrap(
             spacing: 5,
             runSpacing: 5,
-            children: _cities,
+            children: cities,
             // children: List.generate(
             //   5,
             //   (index) => const CityElement.skeleton(),
