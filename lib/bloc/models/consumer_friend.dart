@@ -13,7 +13,8 @@ class ConsumerFriend {
     return ConsumerFriend(
       uid: json['uid'],
       name: json['username'],
-      profilePictureUrl: "https://companieslogo.com/img/orig/GOOG-0ed88f7c.png",
+      profilePictureUrl: json['profileImageUrl'] ??
+          "https://companieslogo.com/img/orig/GOOG-0ed88f7c.png",
     );
   }
 
