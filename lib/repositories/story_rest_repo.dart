@@ -6,13 +6,14 @@ import 'package:http/http.dart' as http;
 
 class StoryRestRepo extends IStoryRepo {
   final String url;
+  final String _apiUrl = "/api/v1";
   final String _storiesEndpoint = '/stories';
 
   StoryRestRepo(this.url);
 
   @override
   Future<List<Story>> getStories() async {
-    var response = await http.get(Uri.parse(url + _storiesEndpoint));
+    var response = await http.get(Uri.parse(url + _apiUrl + _storiesEndpoint));
     if (response.statusCode == 200) {
       List<dynamic> storiesJson = jsonDecode(response.body);
       List<Story> stories = [];
@@ -30,7 +31,7 @@ class StoryRestRepo extends IStoryRepo {
     String continent,
     String? country,
   ) async {
-    var endpoint = "$url/$_storiesEndpoint/$continent";
+    var endpoint = "$url$_apiUrl$_storiesEndpoint/$continent";
     if (country != null) {
       endpoint += "/$country";
     }

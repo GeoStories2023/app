@@ -12,6 +12,7 @@ import 'i_consumer_repo.dart';
 
 class ConsumerRestRepo extends IConsumerRepo {
   final String url;
+  final String _apiUrl = "/api/v1";
   final String _consumerStatisticsUrl = '/users/statistics';
   final String _achievementsUrl = '/consumer/achievements';
   final String _nameUrl = '/users';
@@ -27,7 +28,7 @@ class ConsumerRestRepo extends IConsumerRepo {
 
   @override
   Future<List<Achievement>> getAchievements({String? uid}) async {
-    var uri = Uri.parse(url + _achievementsUrl);
+    var uri = Uri.parse(url + _apiUrl + _achievementsUrl);
     var resp = await http.get(uri, headers: {
       'Authorization': 'Bearer ${await AuthService().currentUser!.getIdToken()}'
     });
@@ -46,7 +47,7 @@ class ConsumerRestRepo extends IConsumerRepo {
   @override
   Future<ConsumerStats> getConsumerStatistics({String? uid}) async {
     var uid_ = uid ?? AuthService().currentUser!.uid;
-    var uri = Uri.parse("$url$_consumerStatisticsUrl/$uid_");
+    var uri = Uri.parse("$url$_apiUrl$_consumerStatisticsUrl/$uid_");
     var resp = await http.get(uri, headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -62,7 +63,7 @@ class ConsumerRestRepo extends IConsumerRepo {
   @override
   Future changeName(String name) async {
     final String uid = AuthService().currentUser!.uid;
-    var uri = Uri.parse('$url$_nameChangeUrl/$uid');
+    var uri = Uri.parse('$url$_apiUrl$_nameChangeUrl/$uid');
     var resp = await http.put(uri, headers: {
       'Authorization': 'Bearer ${await AuthService().currentUser!.getIdToken()}'
     }, body: {
@@ -78,7 +79,7 @@ class ConsumerRestRepo extends IConsumerRepo {
   @override
   Future<String> getName() async {
     var uid = AuthService().currentUser!.uid;
-    var uri = Uri.parse("$url$_nameUrl/$uid");
+    var uri = Uri.parse("$url$_apiUrl$_nameUrl/$uid");
     var auth = await AuthService().currentUser!.getIdToken();
     log(auth);
     var resp = await http.get(uri, headers: {
@@ -97,7 +98,7 @@ class ConsumerRestRepo extends IConsumerRepo {
   @override
   Future<List<ConsumerFriend>> getFriends() async {
     var uid = AuthService().currentUser!.uid;
-    var uri = Uri.parse("$url$_friendsUrl/$uid");
+    var uri = Uri.parse("$url$_apiUrl$_friendsUrl/$uid");
     var auth = await AuthService().currentUser!.getIdToken();
     log(auth);
     var resp = await http.get(uri, headers: {
@@ -120,7 +121,7 @@ class ConsumerRestRepo extends IConsumerRepo {
 
   @override
   Future<List<StartedStory>> getStartedStories() async {
-    var uri = Uri.parse(url + _startedStoriesUrl);
+    var uri = Uri.parse(url + _apiUrl + _startedStoriesUrl);
     var resp = await http.get(uri, headers: {
       'Authorization': 'Bearer ${await AuthService().currentUser!.getIdToken()}'
     });
@@ -138,7 +139,7 @@ class ConsumerRestRepo extends IConsumerRepo {
 
   @override
   Future addFriend(String username) async {
-    var uri = Uri.parse(url + _frienAddUrl);
+    var uri = Uri.parse(url + _apiUrl + _frienAddUrl);
     await http.post(uri, headers: {
       'Authorization': 'Bearer ${await AuthService().currentUser!.getIdToken()}'
     }, body: {
@@ -148,7 +149,7 @@ class ConsumerRestRepo extends IConsumerRepo {
 
   @override
   Future<bool> isPremium({String? uid}) async {
-    var uri = Uri.parse(url + _premiumCheckUrl);
+    var uri = Uri.parse(url + _apiUrl + _premiumCheckUrl);
     var resp = await http.get(uri, headers: {
       'Authorization': 'Bearer ${await AuthService().currentUser!.getIdToken()}'
     });
@@ -162,7 +163,7 @@ class ConsumerRestRepo extends IConsumerRepo {
 
   @override
   Future<int> getLevel({String? uid}) async {
-    var uri = Uri.parse(url + _levelUrl);
+    var uri = Uri.parse(url + _apiUrl + _levelUrl);
     var resp = await http.get(uri, headers: {
       'Authorization': 'Bearer ${await AuthService().currentUser!.getIdToken()}'
     });
@@ -176,7 +177,7 @@ class ConsumerRestRepo extends IConsumerRepo {
 
   @override
   Future<bool> hasToChangeName() async {
-    var uri = Uri.parse(url + _nameChangeRequiredUrl);
+    var uri = Uri.parse(url + _apiUrl + _nameChangeRequiredUrl);
     var resp = await http.get(uri, headers: {
       'Authorization': 'Bearer ${await AuthService().currentUser!.getIdToken()}'
     });

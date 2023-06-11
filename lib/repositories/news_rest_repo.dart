@@ -7,13 +7,15 @@ import 'i_news_repo.dart';
 
 class NewsRestRepo extends INewsRepo {
   final String url;
+  final String _apiUrl = "/api/v1";
   final String _newsEndpoint = '/news';
 
   NewsRestRepo(this.url);
 
   @override
   Future<List<News>> getNews() async {
-    var uri = Uri.parse(url + _newsEndpoint);
+    var uri = Uri.parse(url + _apiUrl + _newsEndpoint);
+    print(uri);
     var auth = await AuthService().currentUser!.getIdToken();
     var response = await http.get(uri, headers: {
       'Content-Type': 'application/json',
