@@ -15,7 +15,6 @@ class NewsRestRepo extends INewsRepo {
   @override
   Future<List<News>> getNews() async {
     var uri = Uri.parse(url + _apiUrl + _newsEndpoint);
-    print(uri);
     var auth = await AuthService().currentUser!.getIdToken();
     var response = await http.get(uri, headers: {
       'Content-Type': 'application/json',
