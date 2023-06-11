@@ -9,7 +9,9 @@
     "auth_business_login": "Business login",
     "auth_email_email": "E-Mail",
     "auth_email_password": "Password",
+    "auth_email_password_repeat": "Repeat password",
     "auth_email_login": "Login",
+    "auth_email_register": "Register",
 
     "home_news": "News",
     "home_adventure_selection": "Choose your Adventure",

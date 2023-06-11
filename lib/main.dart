@@ -7,7 +7,6 @@ import 'package:geostories/repositories/consumer_rest_repo.dart';
 import 'package:geostories/repositories/i_consumer_repo.dart';
 import 'package:geostories/repositories/i_news_repo.dart';
 import 'package:geostories/repositories/news_rest_repo.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -25,9 +24,8 @@ import 'splash/splash_bloc.dart';
 
 void main() async {
   final MapRestRepo mapRestRepo = MapRestRepo("192.168.196.219:80");
-  final IConsumerRepo consumerRepo =
-      ConsumerRestRepo("http://10.109.211.83/api/v1");
-  final INewsRepo newsRepo = NewsRestRepo("http://10.109.211.83/api/v1");
+  final IConsumerRepo consumerRepo = ConsumerRestRepo("http://192.168.0.234");
+  final INewsRepo newsRepo = NewsRestRepo("http://192.168.0.234");
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

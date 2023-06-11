@@ -10,6 +10,8 @@
     "auth_email_email": "E-Mail",
     "auth_email_password": "Passwort",
     "auth_email_login": "Login",
+    "auth_email_password_repeat": "Passwort bestätigen",
+    "auth_email_register": "Registrieren",
 
     "home_news": "Neuigkeiten",
     "home_adventure_selection": "Wähle dein Abenteuer",

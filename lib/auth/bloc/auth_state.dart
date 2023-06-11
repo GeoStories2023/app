@@ -19,3 +19,14 @@ class AuthLogoutFailure extends AuthState {}
 class AuthAutoLoginInProgress extends AuthState {}
 
 class AuthAutoLoginSuccess extends AuthState {}
+
+enum RegisterError {
+  passwordMatch,
+  emailExists,
+}
+
+class AuthEmailRegisterFailure extends AuthState {
+  RegisterError error;
+
+  AuthEmailRegisterFailure(this.error);
+}

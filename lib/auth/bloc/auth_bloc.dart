@@ -96,10 +96,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     try {
-      await AuthService().signUpWithEmail(event.email, event.password);
-      add(AuthLoginEmailPressed(event.email, event.password));
+      if (event.password != event.repeatPassword) {
+        emit(AuthEmailRegisterFailure(RegisterError.passwordMatch));
+      } else {
+        await AuthService().signUpWithEmail(event.email, event.password);
+        add(AuthLoginEmailPressed(event.email, event.password));
+      }
     } catch (e) {
-      // TODO: Handle error
+      emit(AuthEmailRegisterFailure(RegisterError.emailExists));
     }
   }
 }

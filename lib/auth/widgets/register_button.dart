@@ -8,8 +8,13 @@ import '../bloc/auth_bloc.dart';
 class RegisterButton extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController pwdController;
-  const RegisterButton(
-      {super.key, required this.emailController, required this.pwdController});
+  final TextEditingController pwdRepeatController;
+  const RegisterButton({
+    super.key,
+    required this.emailController,
+    required this.pwdController,
+    required this.pwdRepeatController,
+  });
 
   @override
   State<StatefulWidget> createState() => _RegisterButtonState();
@@ -27,6 +32,7 @@ class _RegisterButtonState extends State<RegisterButton> {
           AuthRegisterEmailPressed(
             widget.emailController.text,
             widget.pwdController.text,
+            widget.pwdRepeatController.text,
           ),
         ),
         child: Container(
@@ -38,7 +44,7 @@ class _RegisterButtonState extends State<RegisterButton> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                l10n!.auth_email_login,
+                l10n!.auth_email_register,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 18,

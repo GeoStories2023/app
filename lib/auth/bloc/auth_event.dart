@@ -20,8 +20,13 @@ class AuthLoginEmailPressed extends AuthEvent {
 class AuthRegisterEmailPressed extends AuthEvent {
   final String email;
   final String password;
+  final String repeatPassword;
 
-  const AuthRegisterEmailPressed(this.email, this.password);
+  const AuthRegisterEmailPressed(
+    this.email,
+    this.password,
+    this.repeatPassword,
+  );
 }
 
 class _WaitForLogin extends AuthEvent {}
