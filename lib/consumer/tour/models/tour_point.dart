@@ -26,7 +26,7 @@ class TourPoint {
     IconData icon;
     switch (type) {
       case TourPointType.shop:
-        icon = Icons.house;
+        icon = Icons.pin;
         break;
       case TourPointType.waypoint:
         icon = Icons.pin_drop;
