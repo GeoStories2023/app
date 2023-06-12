@@ -119,9 +119,7 @@ class _TourRunningMapState extends State<TourRunningMap> {
             mapController: mapController,
             interactiveFlag: canMove
                 ? InteractiveFlag.all
-                : InteractiveFlag.none |
-                    InteractiveFlag.rotate |
-                    InteractiveFlag.pinchZoom,
+                : InteractiveFlag.none | InteractiveFlag.pinchZoom,
           ),
           SafeArea(
             child: Column(
@@ -148,7 +146,7 @@ class _TourRunningMapState extends State<TourRunningMap> {
                           mapController.move(
                               LatLng(lastPosition!.latitude,
                                   lastPosition!.longitude),
-                              16);
+                              mapController.zoom);
                         }
                       });
                     },

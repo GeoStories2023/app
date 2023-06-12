@@ -17,7 +17,7 @@ import 'models/tour_point.dart';
 
 class TourPreviewMap extends StatefulWidget {
   final String tourId;
-  final String url = "http://192.168.43.127";
+  final String url = "http://192.168.8.106";
   const TourPreviewMap({super.key, required this.tourId});
 
   @override
@@ -170,88 +170,3 @@ class _TourPreviewMapState extends State<TourPreviewMap> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import 'package:flutter/material.dart';
-// import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:flutter_map/flutter_map.dart';
-// import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-// import 'package:geostories/consumer/tour/position_bloc/bloc/position_bloc.dart';
-// import 'package:geostories/consumer/tour/widgets/tour_current_position_layer.dart';
-// import 'package:geostories/consumer/tour/widgets/tour_map.dart';
-// import 'package:geostories/consumer/tour/widgets/tour_path_layer.dart';
-// import 'package:geostories/consumer/tour/widgets/tour_popup_layer.dart';
-// import 'package:latlong2/latlong.dart';
-
-// import 'models/tour_point.dart';
-
-// class TourPreviewMap extends StatelessWidget {
-//   MapController mapController = MapController();
-
-//   TourPreviewMap({super.key});
-
-//   List<Marker> tourPointToMarker(List<TourPoint> tourPoints) {
-//     List<Marker> markers = [];
-//     for (TourPoint tourPoint in tourPoints) {
-//       if (tourPoint.type != TourPointType.waypoint) {
-//         markers.add(tourPoint.marker);
-//       }
-//     }
-//     return markers;
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SafeArea(
-//         child: Stack(
-//           alignment: AlignmentDirectional.topCenter,
-//           children: [
-//             Column(
-//               children: [
-//                 Align(
-//                   alignment: Alignment.topLeft,
-//                   child: IconButton(
-//                     onPressed: () => Navigator.of(context).pop(),
-//                     icon: const FaIcon(FontAwesomeIcons.angleLeft),
-//                   ),
-//                 ),
-//                 const Align(
-//                     alignment: Alignment.topCenter,
-//                     child: Text("Story of Bremen",
-//                         style: TextStyle(
-//                             fontSize: 20, fontWeight: FontWeight.bold))),
-//                 SizedBox(
-//                   height: 300,
-//                   child: BlocBuilder<PositionBloc, PositionState>(
-//                       builder: (context, state) {
-//                     if (state is NewPlayerPosition) {
-//                       TourMap(
-//                         mapController: mapController,
-//                         centerPosition: LatLng(1, 1),
-//                       );
-//                     }
-//                     return Container();
-//                   }),
-//                 )
-//               ],
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

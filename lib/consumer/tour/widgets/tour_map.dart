@@ -37,6 +37,7 @@ class TourMap extends StatefulWidget {
 class _TourMapState extends State<TourMap> {
   TourData? tourData;
   LatLng? currentPosition;
+  double? heading;
   final PopupController popupLayerController = PopupController();
   late StreamSubscription positionStream;
 
@@ -49,6 +50,7 @@ class _TourMapState extends State<TourMap> {
     positionStream =
         Geolocator.getPositionStream(locationSettings: locationSettings)
             .listen((position) {
+      heading = position.heading;
       var newPos = LatLng(position.latitude, position.longitude);
 
       setState(() {
@@ -129,7 +131,14 @@ class _TourMapState extends State<TourMap> {
                           point: currentPosition!,
                           width: 80,
                           height: 80,
-                          builder: (context) => const FlutterLogo(),
+                          builder: (context) => Transform.rotate(
+                            angle: pi / 180 * (heading ?? 0),
+                            child: Icon(
+                              Icons.navigation,
+                              size: 60,
+                              color: Colors.red,
+                            ),
+                          ),
                         ),
                       ],
                     )
