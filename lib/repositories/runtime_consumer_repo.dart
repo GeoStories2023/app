@@ -100,4 +100,10 @@ class RuntimeConsumerRepo extends IConsumerRepo {
   Future<bool> hasToChangeName() async {
     return false;
   }
+
+  @override
+  Future removeFriend(String uid) {
+    // TODO: implement removeFriend
+    throw UnimplementedError();
+  }
 }

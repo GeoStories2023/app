@@ -31,6 +31,12 @@ class ProfileFriendsAdded extends ProfileEvent {
   ProfileFriendsAdded(this.username);
 }
 
+class ProfileFriendsRemoved extends ProfileEvent {
+  final String uid;
+
+  ProfileFriendsRemoved(this.uid);
+}
+
 abstract class ProfileState {}
 
 class ProfileViewCityDetails extends ProfileState {
@@ -91,6 +97,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileNameLoaded>(_onNameLoaded);
     on<ProfileFriendsLoaded>(_onFriendsLoaded);
     on<ProfileFriendsAdded>(_onFriendsAdded);
+    on<ProfileFriendsRemoved>(_onFriendsRemoved);
     on<ProfileLevelLoaded>(_onLevelLoaded);
   }
 
@@ -152,6 +159,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async {
     try {
       await consumerRepo.addFriend(event.username);
+      add(ProfileFriendsLoaded());
     } catch (e) {
       emit(ProfileFriendsLoadError());
     }
@@ -165,6 +173,18 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileLevelLoadInProgress());
       var level = await consumerRepo.getLevel();
       emit(ProfileLevelLoadSuccess(level));
+    } catch (e) {
+      emit(ProfileFriendsLoadError());
+    }
+  }
+
+  FutureOr<void> _onFriendsRemoved(
+    ProfileFriendsRemoved event,
+    Emitter<ProfileState> emit,
+  ) async {
+    try {
+      await consumerRepo.removeFriend(event.uid);
+      add(ProfileFriendsLoaded());
     } catch (e) {
       emit(ProfileFriendsLoadError());
     }

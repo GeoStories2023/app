@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geostories/bloc/models/consumer_friend.dart';
 
-class FriendElement extends StatelessWidget {
+import '../../profile/profile_bloc.dart';
+
+class FriendElement extends StatefulWidget {
   final bool? buildSkeleton;
   final ConsumerFriend? friend;
 
@@ -16,20 +19,55 @@ class FriendElement extends StatelessWidget {
         friend = null;
 
   @override
+  State<FriendElement> createState() => _FriendElementState();
+}
+
+class _FriendElementState extends State<FriendElement> {
+  bool showCrud = false;
+
+  @override
   Widget build(BuildContext context) {
-    if (buildSkeleton!) {
+    if (widget.buildSkeleton!) {
       return Column(
         children: [
-          _citySkeleton(context),
+          _imageSkeleton(context),
           const Padding(padding: EdgeInsets.symmetric(vertical: 1)),
           _textSkeleton(context),
         ],
       );
     }
-    return _friendImage(context);
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          showCrud = false;
+        });
+      },
+      onLongPress: () {
+        setState(() {
+          showCrud = true;
+        });
+      },
+      child: Stack(children: [
+        _friendImage(context),
+        if (showCrud) _crud(context),
+      ]),
+    );
   }
 
-  Widget _citySkeleton(BuildContext context) {
+  Widget _crud(BuildContext context) {
+    var bloc = BlocProvider.of<ProfileBloc>(context);
+    return IconButton(
+      onPressed: () {
+        bloc.add(ProfileFriendsRemoved(widget.friend!.uid));
+        setState(() {
+          showCrud = false;
+        });
+      },
+      icon: const Icon(Icons.delete),
+    );
+  }
+
+  Widget _imageSkeleton(BuildContext context) {
     return Column(
       children: [
         ClipRRect(
@@ -60,7 +98,7 @@ class FriendElement extends StatelessWidget {
   }
 
   Widget _friendImage(BuildContext context) {
-    if (friend!.profilePictureUrl.isEmpty) {
+    if (widget.friend!.profilePictureUrl.isEmpty) {
       return Image.asset(
         "assets/logo_crop.png",
         fit: BoxFit.fill,
@@ -77,15 +115,15 @@ class FriendElement extends StatelessWidget {
                 width: 75,
                 height: 75,
                 child: CachedNetworkImage(
-                  imageUrl: friend!.profilePictureUrl,
+                  imageUrl: widget.friend!.profilePictureUrl,
                   fit: BoxFit.fitHeight,
-                  placeholder: (context, url) => _citySkeleton(context),
+                  placeholder: (context, url) => _imageSkeleton(context),
                 ),
               ),
             ),
           ],
         ),
-        Text(friend!.name),
+        Text(widget.friend!.name),
       ],
     );
   }

@@ -22,6 +22,7 @@ class ConsumerRestRepo extends IConsumerRepo {
   final String _nameChangeRequiredUrl = '/users';
   final String _friendsUrl = '/users';
   final String _frienAddUrl = '/users/friends';
+  final String _friendRemoveUrl = '/users/friends';
   final String _startedStoriesUrl = "/consumer/stories/started";
 
   ConsumerRestRepo(this.url);
@@ -187,5 +188,13 @@ class ConsumerRestRepo extends IConsumerRepo {
     } else {
       throw Exception('Failed to check name change');
     }
+  }
+
+  @override
+  Future removeFriend(String uid) async {
+    var uri = Uri.parse("$url$_apiUrl$_friendRemoveUrl/$uid");
+    await http.delete(uri, headers: {
+      'Authorization': 'Bearer ${await AuthService().currentUser!.getIdToken()}'
+    });
   }
 }
