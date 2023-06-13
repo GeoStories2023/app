@@ -17,7 +17,7 @@ import 'models/tour_point.dart';
 
 class TourPreviewMap extends StatefulWidget {
   final String tourId;
-  final String url = "http://192.168.8.106";
+  final String url = "http://192.168.161.125";
   const TourPreviewMap({super.key, required this.tourId});
 
   @override
@@ -95,9 +95,9 @@ class _TourPreviewMapState extends State<TourPreviewMap> {
                         icon: const FaIcon(FontAwesomeIcons.angleLeft),
                       ),
                     ),
-                    const Align(
+                    Align(
                         alignment: Alignment.topCenter,
-                        child: Text("Story of Bremen",
+                        child: Text(snapshot.data?.name ?? "",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold))),
                     Padding(
@@ -124,6 +124,19 @@ class _TourPreviewMapState extends State<TourPreviewMap> {
                                   repo.getStartedTours().then((value) {
                                     StartedTour? startedTour;
                                     if (value.isNotEmpty) {
+                                      for (var t in value) {
+                                        if (t.tourData.id ==
+                                            snapshot.data?.id) {
+                                          startedTour = t;
+                                          break;
+                                        }
+                                      }
+                                    }
+                                    if (startedTour != null) {
+                                      print(snapshot.data?.id);
+                                      for (var t in value) {
+                                        print(t.tourData.id);
+                                      }
                                       startedTour = value.firstWhere(
                                           (element) =>
                                               element.tourData.id ==

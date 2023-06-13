@@ -54,6 +54,7 @@ class _QrScannerWidget extends State<QrScannerWidget> {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       setState(() {
+        print("AAAAAAAAAAAA $scanData");
         result = scanData;
       });
     });

@@ -15,21 +15,13 @@ class ConsumerDiscover extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _title(context),
-              const DiscoverWorldMap(),
-              _tourWidget(context),
-            ],
-          ),
-        ),
+        child: _tourWidget(context),
       ),
     );
   }
 
   Widget _tourWidget(BuildContext context) {
-    final ITourRepo tourRepo = TourRestRepo("http://192.168.43.127:81/api/v1");
+    final ITourRepo tourRepo = TourRestRepo("http://192.168.161.125/api/v1");
     return FutureBuilder(
       future: tourRepo.getTours(),
       builder: (context, snapshot) {
@@ -42,28 +34,30 @@ class ConsumerDiscover extends StatelessWidget {
   }
 
   Widget _tourList(BuildContext context, List<TourInfo> tours) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * .6,
-      child: ListView.builder(
-        itemCount: tours.length,
-        itemBuilder: (context, index) {
-          var t = tours[index];
-          return ListTile(
-            title: Text(t.id),
-            leading: Image.network(
-              t.imageUrl ??
-                  "https://www.handwerk.com/sites/default/files/styles/max_1300x1300/public/2017-08/hide-pain-harold-title-red%20-web.jpg?itok=xCzsBOrJ",
-            ),
-            trailing: IconButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .push(slideLeftTransition(TourPreviewMap(tourId: t.id)));
-              },
-              icon: const FaIcon(FontAwesomeIcons.angleRight),
-            ),
-            subtitle: Text(t.description ?? ""),
-          );
-        },
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height * .6,
+        child: ListView.builder(
+          itemCount: tours.length,
+          itemBuilder: (context, index) {
+            var t = tours[index];
+            return ListTile(
+              title: Text(t.name),
+              leading: Image.network(
+                t.imageUrl ??
+                    "https://image.geo.de/30155820/t/ma/v4/w1440/r0/-/bremer-stadtmusikanten-s-1308154999-jpg--88940-.jpg",
+              ),
+              trailing: IconButton(
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(slideLeftTransition(TourPreviewMap(tourId: t.id)));
+                },
+                icon: const FaIcon(FontAwesomeIcons.angleRight),
+              ),
+              subtitle: Text(t.description ?? ""),
+            );
+          },
+        ),
       ),
     );
   }

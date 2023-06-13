@@ -26,7 +26,7 @@ class TourPoint {
     IconData icon;
     switch (type) {
       case TourPointType.shop:
-        icon = Icons.pin;
+        icon = Icons.location_on;
         break;
       case TourPointType.waypoint:
         icon = Icons.pin_drop;
@@ -52,8 +52,12 @@ class TourPoint {
     const double markerSize = 30;
 
     String id = json["id"];
-    String name = "test";
-    TourPointType type = TourPointType.shop;
+    String name = json["name"];
+    TourPointType type =
+        json["typeId"] == "84cb833e-77ff-4a60-8a9a-5fa4e743a05a"
+            ? TourPointType.shop
+            : TourPointType.waypoint;
+    print(json);
     String description = json["description"];
 
     double latitude = double.parse(json["latitude"].toString());

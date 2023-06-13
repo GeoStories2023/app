@@ -69,6 +69,7 @@ class _TourMapState extends State<TourMap> {
   List<Marker> tourPointToMarker(List<TourPoint> tourPoints) {
     List<Marker> markers = [];
     for (TourPoint tourPoint in tourPoints) {
+      print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$tourPoint");
       if (tourPoint.type != TourPointType.waypoint) {
         Marker marker = tourPoint.marker;
         if (widget.startedTour != null) {
@@ -131,28 +132,27 @@ class _TourMapState extends State<TourMap> {
                           point: currentPosition!,
                           width: 80,
                           height: 80,
-                          builder: (context) => Transform.rotate(
-                            angle: pi / 180 * (heading ?? 0),
-                            child: Icon(
-                              Icons.navigation,
-                              size: 60,
-                              color: Colors.red,
-                            ),
+                          builder: (context) => Icon(
+                            Icons.navigation,
+                            size: 60,
+                            color: Colors.red,
                           ),
                         ),
                       ],
                     )
                   : Container(),
-              PolylineLayer(
-                polylines: [
-                  Polyline(
-                      points: snapshot.data!.tourPoints
-                          .map((tourPoint) => tourPoint.marker.point)
-                          .toList(),
-                      strokeWidth: 4,
-                      color: Colors.blue),
-                ],
-              ),
+              snapshot.data!.tourPoints.length > 1
+                  ? PolylineLayer(
+                      polylines: [
+                        Polyline(
+                            points: snapshot.data!.tourPoints
+                                .map((tourPoint) => tourPoint.marker.point)
+                                .toList(),
+                            strokeWidth: 4,
+                            color: Colors.blue),
+                      ],
+                    )
+                  : Container(),
               markerLayer(snapshot.data!),
             ],
           );
